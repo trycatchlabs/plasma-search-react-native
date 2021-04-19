@@ -10,9 +10,9 @@ function Home(props) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
-    <View >
-      <SafeAreaView style={{height: "93.3%"}}>
-      <ScrollView style={styles.scrollView}>
+    <View style={{backgroundColor: "#e06666"}}>
+      <SafeAreaView style={{height: "91.3%"}}>
+      <ScrollView>
         <Screen index={selectedIndex}/>
       </ScrollView>
       </SafeAreaView>

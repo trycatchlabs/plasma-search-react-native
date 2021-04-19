@@ -1,36 +1,27 @@
 import React from 'react';
 import { View, ImageBackground, StyleSheet, Text } from 'react-native';
 import { connect } from "react-redux";
-import { Input, Button } from '@ui-kitten/components';
-import { useState } from 'react';
-import AboutMe from './AboutMe';
-import SearchDoner from './SearchDoner';
-import Notifications from './Notifications';
 
 
 
-function Screen(props) {
+function SearchDoner(props) {
 
     const { index } = props;
 
     return (
 
         <View >
-            {index === 0 && (
-
-                <AboutMe></AboutMe>
-            )}
-
-            {index === 1 && (
-                <SearchDoner></SearchDoner>
-
-            )}
-
-            {index === 2 && (
-                <Notifications></Notifications>
-            )}
-
-
+            <Text>this is search doner page</Text>
+           <Text style={{fontSize: 50}}>
+    this is the search page and its scrollable 
+proofproofproofproofproofproofproofproofproofproofproofproofproof
+proofproofproofproofproofproofproofproofproofproof
+proofproofproofproofproofproofproof
+proofproofproofproofproofproof
+proofproofproofproofproofproofproof
+proofproofproofproofproofproofproof
+proofproofproofproofproofproofproof
+proofproofproofproofproofproofproof</Text>
         </View>
 
     )
@@ -41,7 +32,7 @@ export const mapToState = (state) => {
     return state
 }
 
-export default connect(mapToState)(Screen);
+export default connect(mapToState)(SearchDoner);
 
 const styles = StyleSheet.create({
     container: {

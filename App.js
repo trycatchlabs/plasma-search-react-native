@@ -1,25 +1,26 @@
 import { StatusBar } from 'react-native';
 import React from 'react';
-import { StyleSheet,View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { newStore } from './store';
-import Login from './components/Login';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, Text } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import Home from './components/Home';
+import Login from "./components/Login"
 
 function App() {
-  
+
   const store = newStore();
 
   return (
-  <Provider store={store}>
-    <ApplicationProvider {...eva} theme={eva.light}>
-    <StatusBar backgroundColor="black" barStyle="light-content"></StatusBar>
-    <View >
-     <Home/>
-    </View>
-    </ApplicationProvider>
+    <Provider store={store}>
+      <ApplicationProvider {...eva} theme={eva.dark} >
+        <StatusBar backgroundColor="grey" barStyle="light-content" ></StatusBar>
+        <Text style={styles.header}>COVAID</Text>
+        <View style={{ backgroundColor: "white" }}>
+          < Home />
+        </View>
+      </ApplicationProvider>
     </Provider>
 
   );
@@ -28,10 +29,19 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'grey',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  header: { 
+    fontSize: 35, 
+    color: "black", 
+    fontWeight: 'bold', 
+    backgroundColor: "red", 
+    textAlign: 'center',
+    borderColor: "black",
+    borderWidth: 2
+  }
 });
 
 
