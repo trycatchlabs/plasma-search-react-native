@@ -12,7 +12,7 @@ function Login() {
         <View>
             <Header />
             <TextInput
-                placeholder={"Mobile number"}
+                label={"Mobile number"}
                 onChangeText={(nextState) => {
                     setMobileNumber(nextState)
                 }}
@@ -22,7 +22,7 @@ function Login() {
 
             <TextInput
                 secureTextEntry={true}
-                placeholder={"Password"}
+                label={"Password"}
                 onChangeText={(nextStatePass) => {
                     setPassword(nextStatePass)
                 }}
