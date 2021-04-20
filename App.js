@@ -4,6 +4,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { StyleSheet, Text, View } from 'react-native';
 import Login from './screens/Login';
 import Register from './screens/Register';
+import Home from './screens/Home';
 
 const theme = {
   ...DefaultTheme,
@@ -18,7 +19,7 @@ function App() {
   return (
 
     <PaperProvider theme={theme}>
-      <Register/>
+      <Home/>
       </PaperProvider>
   );
 }
