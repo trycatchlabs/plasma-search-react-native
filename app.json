@@ -1,0 +1,12 @@
+{
+  "name": "plasma-expo",
+  "displayName": "plasma-expo",
+  "expo": {
+    "name": "plasma-expo",
+    "slug": "plasma-expo",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
