@@ -2,14 +2,10 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BottomNavigation, Text } from 'react-native-paper';
 import Header from '../components/Header';
-
-const MusicRoute = () => <Text>Music</Text>;
-
-const AlbumsRoute = () => <Text>Albums</Text>;
-
-const RecentsRoute = () => <Text>Recents</Text>;
-
-const RecentsRoute2 = () => <Text>Recents2</Text>;
+import Blood from '../screens/Blood';
+import Misc from '../screens/Misc';
+import Oxygen from '../screens/Oxygen';
+import Profile from '../screens/Profile'
 
 function BottomNav() {
     const [index, setIndex] = React.useState(0);
@@ -17,15 +13,13 @@ function BottomNav() {
         { key: 'Blood', title: 'Blood', icon: 'water' },
         { key: 'albums', title: 'Oxygen', icon: 'circle' },
         { key: 'recents', title: 'Misc', icon: 'clipboard' },
-        { key: 'Profile', title: 'Profile', icon: 'contacts' },
-        
-      
+        { key: 'Profile', title: 'Profile', icon: 'contacts' }
       ]);
       const renderScene = BottomNavigation.SceneMap({
-        Blood: MusicRoute,
-        albums: AlbumsRoute,
-        recents: RecentsRoute,
-        Profile: RecentsRoute2,
+        Blood: Blood,
+        albums: Oxygen,
+        recents: Misc,
+        Profile: Profile,
       });
     return (
             <BottomNavigation
