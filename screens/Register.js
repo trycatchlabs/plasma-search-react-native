@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, RadioButton,Text } from 'react-native-paper';
 import Header from '../components/Header';
 import { useState } from 'react';
 
@@ -8,9 +8,51 @@ import { useState } from 'react';
 function Register() {
     const [mobileNumber, setMobileNumber] = useState("");
     const [password, setPassword] = useState("");
+    const [value, setValue] = React.useState('Male');
+
     return (
         <View>
             <Header />
+
+            <TextInput
+                placeholder={"Name"}
+                onChangeText={(nextState) => {
+                    setMobileNumber(nextState)
+                }}
+            ></TextInput>
+            <TextInput
+                placeholder={"Email"}
+                onChangeText={(nextState) => {
+                    setMobileNumber(nextState)
+                }}
+                keyboardType='email-address'
+            ></TextInput>
+            <TextInput
+                placeholder={"Location"}
+                onChangeText={(nextState) => {
+                    setMobileNumber(nextState)
+                }}
+            ></TextInput>
+            <RadioButton.Group
+            onValueChange={newValue => setValue(newValue)} value={value}>
+                <View style={{justifyContent: "space-between"}}>
+                    <Text>Male</Text>
+                    <RadioButton value="Male" />
+                    <Text>Female</Text>
+                    <RadioButton value="Female" />
+                </View>
+            </RadioButton.Group>
+            <TextInput
+                placeholder={"Age"}
+                onChangeText={(nextState) => {
+                    setMobileNumber(nextState)
+                }}
+                keyboardType='number-pad'
+                maxLength={2}
+
+            ></TextInput>
+
+
             <TextInput
                 placeholder={"Mobile number"}
                 onChangeText={(nextState) => {
@@ -36,8 +78,9 @@ function Register() {
             </Button>
             <Button
                 mode="outlined"
-                onPress={() => console.log("forgot")}>
-                Already a user 
+                onPress={() => { console.log("forgot") }
+                }>
+                Already a user
             </Button>
         </View>
 

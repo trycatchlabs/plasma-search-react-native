@@ -18,7 +18,6 @@ function Login() {
                 }}
                 keyboardType='number-pad'
                 maxLength={10}
-
             ></TextInput>
 
             <TextInput
@@ -28,6 +27,7 @@ function Login() {
                     setPassword(nextStatePass)
                 }}
             ></TextInput>
+
 
             <Button
                 icon="login"
