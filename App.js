@@ -5,12 +5,12 @@ import { StyleSheet, Text, View } from "react-native";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Home from "./screens/Home";
-
+// color : #c70039
 const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#c70039",
+    primary: "teal",
     accent: "#00c78e",
   },
 };
