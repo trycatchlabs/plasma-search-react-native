@@ -18,18 +18,18 @@ import {
   Chip,
 } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { connect } from "react-redux";
 
 function Blood(props) {
-  const [bloodDonor, setBloodDonor] = useState(false);
   const [cardurl, setCardUrl] = useState("");
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
   const [date, setDate] = useState(new Date());
-  const { navigation } = props;
-
   const LeftContent = (props) => <Avatar.Icon {...props} icon="account" />;
+
+  const { bloodReducer } = props;
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -50,7 +50,7 @@ function Blood(props) {
   return (
     <View>
       <ScrollView>
-        {bloodDonor === false && (
+        {bloodReducer.bloodReciever === false ? (
           <>
             <View>
               <Portal>
@@ -99,9 +99,7 @@ function Blood(props) {
               </Card.Actions>
             </Card>
           </>
-        )}
-
-        {bloodDonor === true && (
+        ) : (
           <>
             <View>
               <TextInput
@@ -117,7 +115,11 @@ function Blood(props) {
   );
 }
 
-export default Blood;
+export function mapToState(state) {
+  return state;
+}
+
+export default connect(mapToState)(Blood);
 
 const styles = StyleSheet.create({
   chip: { width: 69, height: 60 },
