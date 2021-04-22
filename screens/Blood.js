@@ -1,7 +1,14 @@
 import * as React from "react";
 import { useState } from "react";
-import { ScrollView, View, StyleSheet, TouchableHighlight } from "react-native";
-import { Avatar, Card, Title, Paragraph } from "react-native-paper";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  Modal,
+  Image,
+} from "react-native";
+import { Avatar, Card, Title, Paragraph, Portal } from "react-native-paper";
 import {
   Button,
   Divider,
@@ -12,14 +19,15 @@ import {
 } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-function Blood() {
+function Blood(props) {
   const [bloodDonor, setBloodDonor] = useState(false);
-  const [bloodPatient, setBloodPatient] = useState(false);
-  const [value, setValue] = React.useState("0");
-  const [text, setText] = React.useState("");
+  const [cardurl, setCardUrl] = useState("");
+  const [visible, setVisible] = React.useState(false);
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
+  const { navigation } = props;
 
   const LeftContent = (props) => <Avatar.Icon {...props} icon="account" />;
 
@@ -42,8 +50,33 @@ function Blood() {
   return (
     <View>
       <ScrollView>
-        {bloodDonor === false && bloodPatient === false && (
+        {bloodDonor === false && (
           <>
+            <View>
+              <Portal>
+                <Modal
+                  visible={visible}
+                  onDismiss={hideModal}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 20,
+                  }}
+                >
+                  <Button
+                    mode="contained"
+                    onPress={() => {
+                      setVisible(false);
+                    }}
+                  >
+                    Go Back
+                  </Button>
+                  <Image
+                    style={{ height: "100%", width: "100%" }}
+                    source={{ uri: "https://picsum.photos/700" }}
+                  />
+                </Modal>
+              </Portal>
+            </View>
             <Card>
               <Card.Title
                 title="Card Title"
@@ -56,14 +89,13 @@ function Blood() {
               </Card.Content>
               <TouchableHighlight
                 onPress={() => {
-                  alert("hello");
+                  setVisible(true);
                 }}
               >
                 <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
               </TouchableHighlight>
               <Card.Actions>
                 <Button>Accept</Button>
-                <Button icon="download"></Button>
               </Card.Actions>
             </Card>
           </>
