@@ -5,6 +5,8 @@ import { StyleSheet, Text, View } from "react-native";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Home from "./screens/Home";
+import { Provider } from "react-redux";
+import newstore from "./store";
 // color : #c70039
 const theme = {
   ...DefaultTheme,
@@ -15,11 +17,14 @@ const theme = {
   },
 };
 
+const store = newstore();
 function App() {
   return (
-    <PaperProvider theme={theme}>
-      <Home></Home>
-    </PaperProvider>
+    <Provider store={store}>
+      <PaperProvider theme={theme}>
+        <Home></Home>
+      </PaperProvider>
+    </Provider>
   );
 }
 
