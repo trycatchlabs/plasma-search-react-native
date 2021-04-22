@@ -6,8 +6,9 @@ import { StyleSheet, TouchableHighlight } from "react-native";
 import { Avatar, Title, Paragraph } from "react-native-paper";
 import { RadioButton, Text, TextInput, Chip } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { connect } from "react-redux";
 
-function Oxygen() {
+function Oxygen(props) {
   const [bloodDonor, setBloodDonor] = React.useState(true);
   const [bloodPatient, setBloodPatient] = React.useState(false);
   const [value, setValue] = React.useState("0");
@@ -15,6 +16,8 @@ function Oxygen() {
   const [date, setDate] = React.useState(new Date());
   const [mode, setMode] = React.useState("date");
   const [show, setShow] = React.useState(false);
+
+  const { oxygenReducer } = props;
 
   const LeftContent = (props) => <Avatar.Icon {...props} icon="account" />;
 
@@ -37,7 +40,7 @@ function Oxygen() {
   return (
     <View>
       <ScrollView>
-        {bloodDonor === false && bloodPatient === false && (
+        {oxygenReducer.oxygenReciever === false ? (
           <>
             <Card>
               <Card.Title
@@ -62,9 +65,7 @@ function Oxygen() {
               </Card.Actions>
             </Card>
           </>
-        )}
-
-        {bloodDonor === true && (
+        ) : (
           <>
             <View>
               <TextInput
@@ -80,4 +81,8 @@ function Oxygen() {
   );
 }
 
-export default Oxygen;
+export function mapToState(state) {
+  return state;
+}
+
+export default connect(mapToState)(Oxygen);

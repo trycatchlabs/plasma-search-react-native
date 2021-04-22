@@ -23,6 +23,12 @@ import {
   setHospitalName,
   setPickUpDropStatus,
 } from "../actions/bloodActions";
+import {
+  setCanDeliverGear,
+  setGearStatus,
+  setOxygenReciever,
+  setHospitalAddressOxygen,
+} from "../actions/oxygenActions";
 
 function Profile(props) {
   const [oxygenReciever, setOxygen] = React.useState(false);
@@ -35,7 +41,7 @@ function Profile(props) {
   const [mode, setMode] = React.useState("date");
   const [show, setShow] = React.useState(false);
 
-  const { dispatch } = props;
+  const { dispatch, bloodReducer, oxygenReducer } = props;
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -58,22 +64,22 @@ function Profile(props) {
     <ScrollView>
       <View style={styles.container}>
         <Text style={{ fontSize: 20 }}>
-          Blood ({props.bloodReciever && <Text>Donate</Text>}
-          {!props.bloodReciever && <Text>Recieve</Text>})
+          Blood ({!bloodReducer.bloodReciever && <Text>Donate</Text>}
+          {bloodReducer.bloodReciever && <Text>Recieve</Text>})
         </Text>
         <Switch
-          value={props.bloodReciever}
+          value={bloodReducer.bloodReciever}
           onValueChange={() => {
-            dispatch(setBloodRecieverOrDoner(!props.bloodReciever));
+            dispatch(setBloodRecieverOrDoner(!bloodReducer.bloodReciever));
           }}
         />
       </View>
-      {props.bloodReciever && (
+      {!bloodReducer.bloodReciever && (
         <Card>
           <Card.Title title="Blood Donation Details" />
           <Text>Blood type</Text>
           <View style={styles.container}>
-            {props.bloodType === 0 ? (
+            {bloodReducer.bloodType === 0 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -96,7 +102,7 @@ function Profile(props) {
                 </Chip>
               </>
             )}
-            {props.bloodType === 1 ? (
+            {bloodReducer.bloodType === 1 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -119,7 +125,7 @@ function Profile(props) {
                 </Chip>
               </>
             )}
-            {props.bloodType === 2 ? (
+            {bloodReducer.bloodType === 2 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -142,7 +148,7 @@ function Profile(props) {
                 </Chip>
               </>
             )}
-            {props.bloodType === 3 ? (
+            {bloodReducer.bloodType === 3 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -168,7 +174,7 @@ function Profile(props) {
           </View>
           <View style={styles.container}>
             <View style={styles.container}>
-              {props.bloodType === 4 ? (
+              {bloodReducer.bloodType === 4 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -191,7 +197,7 @@ function Profile(props) {
                   </Chip>
                 </>
               )}
-              {props.bloodType === 5 ? (
+              {bloodReducer.bloodType === 5 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -214,7 +220,7 @@ function Profile(props) {
                   </Chip>
                 </>
               )}
-              {props.bloodType === 6 ? (
+              {bloodReducer.bloodType === 6 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -237,7 +243,7 @@ function Profile(props) {
                   </Chip>
                 </>
               )}
-              {props.bloodType === 7 ? (
+              {bloodReducer.bloodType === 7 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -270,12 +276,12 @@ function Profile(props) {
               onChangeText={(value) => {
                 dispatch(setRecoveryDate(value));
               }}
-              value={props.recoveryDate}
+              value={bloodReducer.recoveryDate}
             ></TextInput>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
-                value={props.recoveryDate}
+                value={bloodReducer.recoveryDate}
                 mode={mode}
                 is24Hour={true}
                 display="default"
@@ -289,19 +295,19 @@ function Profile(props) {
               onChangeText={(value) => {
                 dispatch(setDistanceWillingTotravel(value));
               }}
-              value={props.distanceWillingToTravel}
+              value={bloodReducer.distanceWillingToTravel}
             ></TextInput>
           </View>
 
           <ImageButton></ImageButton>
         </Card>
       )}
-      {!props.bloodReciever && (
+      {bloodReducer.bloodReciever && (
         <Card>
           <Card.Title title="Blood Donation Details" />
           <Text>Blood type</Text>
           <View style={styles.container}>
-            {props.bloodType === 0 ? (
+            {bloodReducer.bloodType === 0 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -324,7 +330,7 @@ function Profile(props) {
                 </Chip>
               </>
             )}
-            {props.bloodType === 1 ? (
+            {bloodReducer.bloodType === 1 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -347,7 +353,7 @@ function Profile(props) {
                 </Chip>
               </>
             )}
-            {props.bloodType === 2 ? (
+            {bloodReducer.bloodType === 2 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -370,7 +376,7 @@ function Profile(props) {
                 </Chip>
               </>
             )}
-            {props.bloodType === 3 ? (
+            {bloodReducer.bloodType === 3 ? (
               <>
                 <Chip
                   style={styles.chipSelected}
@@ -396,7 +402,7 @@ function Profile(props) {
           </View>
           <View style={styles.container}>
             <View style={styles.container}>
-              {props.bloodType === 4 ? (
+              {bloodReducer.bloodType === 4 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -419,7 +425,7 @@ function Profile(props) {
                   </Chip>
                 </>
               )}
-              {props.bloodType === 5 ? (
+              {bloodReducer.bloodType === 5 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -442,7 +448,7 @@ function Profile(props) {
                   </Chip>
                 </>
               )}
-              {props.bloodType === 6 ? (
+              {bloodReducer.bloodType === 6 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -465,7 +471,7 @@ function Profile(props) {
                   </Chip>
                 </>
               )}
-              {props.bloodType === 7 ? (
+              {bloodReducer.bloodType === 7 ? (
                 <>
                   <Chip
                     style={styles.chipSelected}
@@ -494,7 +500,7 @@ function Profile(props) {
           <View>
             <TextInput
               label={"Hospital Name & address"}
-              value={props.hospitalName}
+              value={bloodReducer.hospitalName}
               onChangeText={(value) => {
                 dispatch(setHospitalName(value));
               }}
@@ -503,14 +509,14 @@ function Profile(props) {
           <View style={styles.container}>
             <Text>Can you provide pickup and drop</Text>
             <Switch
-              value={props.pickUpDrop}
+              value={bloodReducer.pickUpDrop}
               onValueChange={() => {
-                dispatch(setPickUpDropStatus(!props.pickUpDrop));
+                dispatch(setPickUpDropStatus(!bloodReducer.pickUpDrop));
               }}
             />
             <Text>
-              ({props.pickUpDrop && <Text>Yes I Can</Text>}
-              {!props.pickUpDrop && <Text>No I can't</Text>})
+              ({bloodReducer.pickUpDrop && <Text>Yes I Can</Text>}
+              {!bloodReducer.pickUpDrop && <Text>No I can't</Text>})
             </Text>
           </View>
           <ImageButton></ImageButton>
@@ -519,45 +525,57 @@ function Profile(props) {
 
       <View style={styles.container}>
         <Text style={{ fontSize: 20 }}>
-          Oxygen ({oxygenReciever && <Text>Donate</Text>}
-          {!oxygenReciever && <Text>Recieve</Text>})
+          Oxygen ({oxygenReducer.oxygenReciever && <Text>Donate</Text>}
+          {!oxygenReducer.oxygenReciever && <Text>Recieve</Text>})
         </Text>
         <Switch
-          value={oxygenReciever}
-          onValueChange={() => setOxygen(!oxygenReciever)}
+          value={oxygenReducer.oxygenReciever}
+          onValueChange={() => {
+            dispatch(setOxygenReciever(!oxygenReducer.oxygenReciever));
+          }}
         />
       </View>
 
-      {oxygenReciever && (
+      {!oxygenReducer.oxygenReciever && (
+        <Card>
+          <View>
+            <TextInput
+              label={"Hospital Name & address where you are"}
+              onChangeText={(value) => {
+                dispatch(setHospitalAddressOxygen(value));
+              }}
+              value={oxygenReducer.hospitalName}
+            ></TextInput>
+          </View>
+        </Card>
+      )}
+      {oxygenReducer.oxygenReciever && (
         <Card>
           <View style={styles.container}>
             <Text>Do you have full oxygen gear</Text>
             <Switch
-              value={oxygenGear}
-              onValueChange={() => setOxygenGear(!oxygenGear)}
+              value={oxygenReducer.fullGear}
+              onValueChange={() => {
+                dispatch(setGearStatus(!oxygenReducer.fullGear));
+              }}
             />
             <Text>
-              ({oxygenGear && <Text>Yes I Have</Text>}
-              {!oxygenGear && <Text>No I Dont</Text>})
+              ({oxygenReducer.fullGear && <Text>Yes I Have</Text>}
+              {!oxygenReducer.fullGear && <Text>No I Dont</Text>})
             </Text>
           </View>
           <View style={styles.container}>
             <Text>Can I deliver or not</Text>
             <Switch
-              value={oxygenGearDeliver}
-              onValueChange={() => setOxygenGearDeliver(!oxygenGear)}
+              value={oxygenReducer.canDeliver}
+              onValueChange={() => {
+                dispatch(setCanDeliverGear(!oxygenReducer.canDeliver));
+              }}
             />
             <Text>
-              ({oxygenGearDeliver && <Text>Yes I Can</Text>}
-              {!oxygenGearDeliver && <Text>No I Can't</Text>})
+              ({oxygenReducer.canDeliver && <Text>Yes I Can</Text>}
+              {!oxygenReducer.canDeliver && <Text>No I Can't</Text>})
             </Text>
-          </View>
-        </Card>
-      )}
-      {!oxygenReciever && (
-        <Card>
-          <View>
-            <TextInput label={"Hospital Name & address"}></TextInput>
           </View>
         </Card>
       )}
@@ -584,7 +602,7 @@ function Profile(props) {
 }
 
 export function mapToState(state) {
-  return state.bloodReducer;
+  return state;
 }
 
 export default connect(mapToState)(Profile);
