@@ -9,11 +9,13 @@ import Blood from "./Blood";
 import { useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
+import Otp from "./Otp";
+import ForgotPassword from "./ForgotPassword";
 
 const Stack = createStackNavigator();
 
 function Home() {
-  const [signedIn, setSignIn] = useState(false);
+  const [signedIn, setSignIn] = useState(true);
   return (
     <>
       <Header />
@@ -22,6 +24,11 @@ function Home() {
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={Login}></Stack.Screen>
             <Stack.Screen name="Register" component={Register}></Stack.Screen>
+            <Stack.Screen name="Otp" component={Otp}></Stack.Screen>
+            <Stack.Screen
+              name="ForgotPassword"
+              component={ForgotPassword}
+            ></Stack.Screen>
           </Stack.Navigator>
         </NavigationContainer>
       ) : (

@@ -83,7 +83,7 @@ function Register(props) {
       <Button
         icon="login"
         mode="contained"
-        onPress={() => console.log("login")}
+        onPress={() => navigation.navigate("Otp")}
       >
         Register
       </Button>

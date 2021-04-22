@@ -4,7 +4,7 @@ import { Button, TextInput } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
 
-function Login(props) {
+function Otp(props) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const { navigation } = props;
@@ -13,37 +13,16 @@ function Login(props) {
   return (
     <View>
       <TextInput
-        label={"Mobile number"}
+        label={"OTP"}
         onChangeText={(nextState) => {
           setMobileNumber(nextState);
         }}
         keyboardType="number-pad"
-        maxLength={10}
+        maxLength={6}
       ></TextInput>
 
-      <TextInput
-        secureTextEntry={true}
-        label={"Password"}
-        onChangeText={(nextStatePass) => {
-          setPassword(nextStatePass);
-        }}
-      ></TextInput>
-
-      <Button
-        icon="login"
-        mode="contained"
-        onPress={() => console.log("login")}
-      >
-        Login
-      </Button>
-      <Button
-        mode="outlined"
-        onPress={() => navigation.navigate("ForgotPassword")}
-      >
-        Forgot Password
-      </Button>
-      <Button mode="outlined" onPress={() => navigation.navigate("Register")}>
-        Register
+      <Button icon="lock" mode="contained" onPress={() => console.log("login")}>
+        Verify OTP
       </Button>
     </View>
   );
@@ -61,4 +40,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Otp;
