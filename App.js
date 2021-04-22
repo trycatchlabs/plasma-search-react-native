@@ -18,7 +18,7 @@ const theme = {
 function App() {
   return (
     <PaperProvider theme={theme}>
-      <Home />
+      <Home></Home>
     </PaperProvider>
   );
 }

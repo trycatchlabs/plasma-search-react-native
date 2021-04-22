@@ -4,14 +4,15 @@ import { Button, TextInput, RadioButton, Text } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
 
-function Register() {
+function Register(props) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const [value, setValue] = React.useState("Male");
 
+  const { navigation } = props;
+
   return (
     <View>
-      <Header />
       <TextInput
         placeholder={"Name"}
         onChangeText={(nextState) => {
@@ -77,7 +78,7 @@ function Register() {
       <Button
         mode="outlined"
         onPress={() => {
-          console.log("forgot");
+          navigation.navigate("Login");
         }}
       >
         Already a user
