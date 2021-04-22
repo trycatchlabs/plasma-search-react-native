@@ -22,7 +22,7 @@ function App() {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <Home></Home>
+        <Home />
       </PaperProvider>
     </Provider>
   );
