@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, TextInput, RadioButton, Text } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { useState } from "react";
 function Register(props) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [value, setValue] = React.useState("Male");
+  const [gender, setGender] = React.useState(0);
 
   const { navigation } = props;
 
@@ -33,14 +33,26 @@ function Register(props) {
         }}
       ></TextInput>
       <RadioButton.Group
-        onValueChange={(newValue) => setValue(newValue)}
-        value={value}
+        onValueChange={(newValue) => setGender(newValue)}
+        value={gender}
       >
-        <View style={{ justifyContent: "space-between" }}>
-          <Text>Male</Text>
-          <RadioButton value="Male" />
-          <Text>Female</Text>
-          <RadioButton value="Female" />
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <Pressable
+            onPress={() => {
+              setGender(0);
+            }}
+          >
+            <Text style={{ fontSize: 25 }}>Male</Text>
+          </Pressable>
+          <RadioButton value={0} />
+          <Pressable
+            onPress={() => {
+              setGender(1);
+            }}
+          >
+            <Text style={{ fontSize: 25 }}>Female</Text>
+          </Pressable>
+          <RadioButton value={1} />
         </View>
       </RadioButton.Group>
       <TextInput
