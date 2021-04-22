@@ -14,9 +14,17 @@ import {
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ImageButton from "../components/ImageButton";
+import { connect } from "react-redux";
+import {
+  setBloodRecieverOrDoner,
+  setBloodType,
+  setRecoveryDate,
+  setDistanceWillingTotravel,
+  setHospitalName,
+  setPickUpDropStatus,
+} from "../actions/bloodActions";
 
-function Profile() {
-  const [bloodReciever, setBlood] = React.useState(false);
+function Profile(props) {
   const [oxygenReciever, setOxygen] = React.useState(false);
   const [missReciever, setMiss] = React.useState(false);
   const [pickUp, setPickUp] = React.useState(false);
@@ -27,10 +35,13 @@ function Profile() {
   const [mode, setMode] = React.useState("date");
   const [show, setShow] = React.useState(false);
 
+  const { dispatch } = props;
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
     setDate(currentDate);
+    dispatch(setRecoveryDate(currentDate));
   };
 
   const showMode = (currentMode) => {
@@ -47,87 +58,224 @@ function Profile() {
     <ScrollView>
       <View style={styles.container}>
         <Text style={{ fontSize: 20 }}>
-          Blood ({bloodReciever && <Text>Donate</Text>}
-          {!bloodReciever && <Text>Recieve</Text>})
+          Blood ({props.bloodReciever && <Text>Donate</Text>}
+          {!props.bloodReciever && <Text>Recieve</Text>})
         </Text>
         <Switch
-          value={bloodReciever}
-          onValueChange={() => setBlood(!bloodReciever)}
+          value={props.bloodReciever}
+          onValueChange={() => {
+            dispatch(setBloodRecieverOrDoner(!props.bloodReciever));
+          }}
         />
       </View>
-      {bloodReciever && (
+      {props.bloodReciever && (
         <Card>
           <Card.Title title="Blood Donation Details" />
           <Text>Blood type</Text>
           <View style={styles.container}>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              A+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              A-
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              O+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              O-
-            </Chip>
+            {props.bloodType === 0 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(0));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>A+</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(0));
+                  }}
+                >
+                  <Text>A+</Text>
+                </Chip>
+              </>
+            )}
+            {props.bloodType === 1 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(1));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>A-</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(1));
+                  }}
+                >
+                  <Text>A-</Text>
+                </Chip>
+              </>
+            )}
+            {props.bloodType === 2 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(2));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>O+</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(2));
+                  }}
+                >
+                  <Text>O+</Text>
+                </Chip>
+              </>
+            )}
+            {props.bloodType === 3 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(3));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>O-</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(3));
+                  }}
+                >
+                  <Text>O-</Text>
+                </Chip>
+              </>
+            )}
           </View>
           <View style={styles.container}>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              B+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              B-
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              AB+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="water"
-              onPress={() => console.log("Pressed")}
-            >
-              AB-
-            </Chip>
+            <View style={styles.container}>
+              {props.bloodType === 4 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(4));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>B+</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(4));
+                    }}
+                  >
+                    <Text>B+</Text>
+                  </Chip>
+                </>
+              )}
+              {props.bloodType === 5 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(5));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>B-</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(5));
+                    }}
+                  >
+                    <Text>B-</Text>
+                  </Chip>
+                </>
+              )}
+              {props.bloodType === 6 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(6));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>AB+</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(6));
+                    }}
+                  >
+                    <Text>AB+</Text>
+                  </Chip>
+                </>
+              )}
+              {props.bloodType === 7 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(7));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>AB-</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(7));
+                    }}
+                  >
+                    <Text>AB-</Text>
+                  </Chip>
+                </>
+              )}
+            </View>
           </View>
           <View>
-            <Button mode="contained" onPress={showDatepicker}>
-              Recovered on {JSON.stringify(date).split("T")[0].slice(1)}{" "}
-              (YYYY-MM-DD)
-            </Button>
+            {/* planning to add date time here */}
+            <TextInput
+              label={"Date of Recovery DDMMYYYY Format"}
+              keyboardType="number-pad"
+              onChangeText={(value) => {
+                dispatch(setRecoveryDate(value));
+              }}
+              value={props.recoveryDate}
+            ></TextInput>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
-                value={date}
+                value={props.recoveryDate}
                 mode={mode}
                 is24Hour={true}
                 display="default"
@@ -138,85 +286,231 @@ function Profile() {
               label={"Distance you are willing to travel in KMS"}
               keyboardType="number-pad"
               maxLength={4}
+              onChangeText={(value) => {
+                dispatch(setDistanceWillingTotravel(value));
+              }}
+              value={props.distanceWillingToTravel}
             ></TextInput>
           </View>
 
           <ImageButton></ImageButton>
         </Card>
       )}
-      {!bloodReciever && (
+      {!props.bloodReciever && (
         <Card>
           <Card.Title title="Blood Donation Details" />
           <Text>Blood type</Text>
           <View style={styles.container}>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              A+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              A-
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              O+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              O-
-            </Chip>
+            {props.bloodType === 0 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(0));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>A+</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(0));
+                  }}
+                >
+                  <Text>A+</Text>
+                </Chip>
+              </>
+            )}
+            {props.bloodType === 1 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(1));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>A-</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(1));
+                  }}
+                >
+                  <Text>A-</Text>
+                </Chip>
+              </>
+            )}
+            {props.bloodType === 2 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(2));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>O+</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(2));
+                  }}
+                >
+                  <Text>O+</Text>
+                </Chip>
+              </>
+            )}
+            {props.bloodType === 3 ? (
+              <>
+                <Chip
+                  style={styles.chipSelected}
+                  onPress={() => {
+                    dispatch(setBloodType(3));
+                  }}
+                >
+                  <Text style={{ color: "white" }}>O-</Text>
+                </Chip>
+              </>
+            ) : (
+              <>
+                <Chip
+                  style={styles.chip}
+                  onPress={() => {
+                    dispatch(setBloodType(3));
+                  }}
+                >
+                  <Text>O-</Text>
+                </Chip>
+              </>
+            )}
           </View>
           <View style={styles.container}>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              B+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              B-
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="information"
-              onPress={() => console.log("Pressed")}
-            >
-              AB+
-            </Chip>
-            <Chip
-              style={styles.chip}
-              icon="water"
-              onPress={() => console.log("Pressed")}
-            >
-              AB-
-            </Chip>
+            <View style={styles.container}>
+              {props.bloodType === 4 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(4));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>B+</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(4));
+                    }}
+                  >
+                    <Text>B+</Text>
+                  </Chip>
+                </>
+              )}
+              {props.bloodType === 5 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(5));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>B-</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(5));
+                    }}
+                  >
+                    <Text>B-</Text>
+                  </Chip>
+                </>
+              )}
+              {props.bloodType === 6 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(6));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>AB+</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(6));
+                    }}
+                  >
+                    <Text>AB+</Text>
+                  </Chip>
+                </>
+              )}
+              {props.bloodType === 7 ? (
+                <>
+                  <Chip
+                    style={styles.chipSelected}
+                    onPress={() => {
+                      dispatch(setBloodType(7));
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>AB-</Text>
+                  </Chip>
+                </>
+              ) : (
+                <>
+                  <Chip
+                    style={styles.chip}
+                    onPress={() => {
+                      dispatch(setBloodType(7));
+                    }}
+                  >
+                    <Text>AB-</Text>
+                  </Chip>
+                </>
+              )}
+            </View>
           </View>
+
           <View>
-            <TextInput label={"Hospital Name & address"}></TextInput>
+            <TextInput
+              label={"Hospital Name & address"}
+              value={props.hospitalName}
+              onChangeText={(value) => {
+                dispatch(setHospitalName(value));
+              }}
+            ></TextInput>
           </View>
           <View style={styles.container}>
             <Text>Can you provide pickup and drop</Text>
-            <Switch value={pickUp} onValueChange={() => setPickUp(!pickUp)} />
+            <Switch
+              value={props.pickUpDrop}
+              onValueChange={() => {
+                dispatch(setPickUpDropStatus(!props.pickUpDrop));
+              }}
+            />
             <Text>
-              ({pickUp && <Text>Yes I Can</Text>}
-              {!pickUp && <Text>No I can't</Text>})
+              ({props.pickUpDrop && <Text>Yes I Can</Text>}
+              {!props.pickUpDrop && <Text>No I can't</Text>})
             </Text>
           </View>
           <ImageButton></ImageButton>
@@ -289,9 +583,14 @@ function Profile() {
   );
 }
 
-export default Profile;
+export function mapToState(state) {
+  return state.bloodReducer;
+}
+
+export default connect(mapToState)(Profile);
 
 const styles = StyleSheet.create({
-  chip: { width: "19%", height: 50 },
+  chip: { height: 50 },
+  chipSelected: { height: 50, backgroundColor: "red" },
   container: { flexDirection: "row", justifyContent: "center", padding: 10 },
 });
