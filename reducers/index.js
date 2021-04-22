@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import dummyReducer from "./dummy";
+import bloodReducer from "./bloodReducer";
 
 export default combineReducers({
-  dummyReducer,
+  bloodReducer,
 });
