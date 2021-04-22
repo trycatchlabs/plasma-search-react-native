@@ -11,6 +11,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Otp from "./Otp";
 import ForgotPassword from "./ForgotPassword";
+import ViewImage from "./supportscreens/ViewImage";
 
 const Stack = createStackNavigator();
 
