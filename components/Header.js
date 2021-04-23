@@ -26,11 +26,11 @@ function Header(props) {
               icon="information"
               onPress={() => setVisible(true)}
             />
-            <Appbar.Action
+
+          <Appbar.Action
               icon="alert-octagram"
               onPress={() => setVisible(true)}
             />
-
             {props.sigin && (
               <>
                 <Appbar.Action
