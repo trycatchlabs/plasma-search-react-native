@@ -55,7 +55,7 @@ function Blood(props) {
   };
 
   return (
-    <View>
+    <View style={{ flex: 0, padding: 10 }}>
       <ScrollView>
         {bloodReducer.detailsAvailable ? (
           <>
@@ -618,9 +618,14 @@ export function mapToState(state) {
 export default connect(mapToState)(Blood);
 
 const styles = StyleSheet.create({
-  chip: { height: 50 },
+  chip: { height: 50, marginLeft: 10, marginRight: 10 },
   container: { flexDirection: "row", justifyContent: "center" },
   choiceButton: { width: "50%", padding: 5, margin: 1 },
-  chipSelected: { height: 50, backgroundColor: "red" },
+  chipSelected: {
+    height: 50,
+    backgroundColor: "red",
+    marginLeft: 10,
+    marginRight: 10,
+  },
   container: { flexDirection: "row", justifyContent: "center", padding: 10 },
 });

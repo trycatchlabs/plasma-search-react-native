@@ -45,7 +45,7 @@ function Oxygen(props) {
   };
 
   return (
-    <View>
+    <View style={{ flex: 0, padding: 10 }}>
       <ScrollView>
         {oxygenReducer.oxygenDetailsAvailable ? (
           <>
