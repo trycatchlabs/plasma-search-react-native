@@ -12,7 +12,7 @@ function BottomNav() {
   const [routes] = React.useState([
     { key: "Blood", title: "Blood", icon: "water" },
     { key: "albums", title: "Oxygen", icon: "circle" },
-    { key: "recents", title: "Misc", icon: "clipboard" },
+    // { key: "recents", title: "Misc", icon: "clipboard" },// still in progress
     { key: "Profile", title: "Profile", icon: "contacts" },
   ]);
   const renderScene = BottomNavigation.SceneMap({

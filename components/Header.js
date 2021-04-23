@@ -1,15 +1,70 @@
 import React from "react";
-import { StatusBar, StyleSheet, Text, View } from "react-native";
+import { Alert, StatusBar, StyleSheet, View } from "react-native";
 import { Appbar } from "react-native-paper";
-import { Platform, Image } from "react-native";
+import { Linking } from "react-native";
 
-function Header() {
+import { ScrollView } from "react-native";
+import { Dialog, Portal, Text, Button } from "react-native-paper";
+import { connect } from "react-redux";
+import { setBloodRecieverOrDoner } from "../actions/bloodActions";
+
+function Header(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const hideDialog = () => setVisible(false);
+
   return (
-    <Appbar.Header style={styles.header}>
-      <StatusBar></StatusBar>
-      <Appbar.Action icon="mail" onPress={() => console.log("Pressed mail")} />
-      <Appbar.Content title="Covaid" />
-    </Appbar.Header>
+    <>
+      <Appbar.Header style={styles.header}>
+        <StatusBar></StatusBar>
+
+        {props.blood === true && (
+          <>
+            <Appbar.Content title="Covaid " />
+
+            <Appbar.Action
+              icon="information"
+              onPress={() => setVisible(true)}
+            />
+            {props.sigin && (
+              <>
+                <Appbar.Action
+                  icon="logout"
+                  onPress={() =>
+                    Alert.alert("Logout", "do you want to logout", [
+                      {
+                        text: "Yes",
+                        onPress: () => console.log("Yes Pressed"),
+                      },
+                      { text: "No", onPress: () => console.log("No Pressed") },
+                    ])
+                  }
+                />
+              </>
+            )}
+          </>
+        )}
+      </Appbar.Header>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.ScrollArea>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 24 }}>
+              <>
+                <Text>sadads</Text>
+                <Button
+                  onPress={() => {
+                    console.log("dsadas");
+                    Linking.openURL("https://www.google.com");
+                  }}
+                >
+                  click me
+                </Button>
+              </>
+            </ScrollView>
+          </Dialog.ScrollArea>
+        </Dialog>
+      </Portal>
+    </>
   );
 }
 
@@ -25,4 +80,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export function mapToState(state) {
+  return state;
+}
+
+export default connect(mapToState)(Header);
