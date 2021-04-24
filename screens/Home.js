@@ -12,13 +12,38 @@ import Otp from "./Otp";
 import ForgotPassword from "./ForgotPassword";
 import Onboarding from "react-native-onboarding-swiper";
 import SplashScreen from "./SplashScreen";
+import { connect } from "react-redux";
+import { LoginUser } from "../actions/AuthenticationActions";
+import axios from "axios";
+import { getUserInformation } from "../Api/ApiActions";
+import {
+  setBloodRecieverOrDoner,
+  setDetailsAvailable,
+  saveEntireDataInBloodReducer,
+} from "../actions/bloodActions";
 
 const Stack = createStackNavigator();
 
-function Home() {
+function Home(props) {
   const [onboarding, setOnboarding] = useState(true);
-  const [signedIn, setSignIn] = useState(true);
+  const [signedIn, setSignIn] = useState(false);
   const [splash, setSplash] = useState(false);
+
+  const { dispatch } = props;
+
+  React.useEffect(() => {
+    dispatch(LoginUser("9080743231"));
+    setSignIn(true);
+    getUserInformation("9080743231").then((value) => {
+      console.log(value);
+      dispatch(saveEntireDataInBloodReducer(value));
+      // dispatch(
+      //   setBloodRecieverOrDoner(value.bloodReceiver == 1 ? true : false)
+      // );
+      // dispatch(setDetailsAvailable(value.detailsAvailable == 1 ? true : false));
+      // console.log(value.bloodReceiver == 1 ? true : false);
+    });
+  }, [signedIn]);
 
   return (
     <>
@@ -91,4 +116,8 @@ function Home() {
   );
 }
 
-export default Home;
+export function mapToState(state) {
+  return state;
+}
+
+export default connect(mapToState)(Home);

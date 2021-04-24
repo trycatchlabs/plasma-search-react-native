@@ -51,8 +51,20 @@ export function setPickUpDropStatus(value) {
 }
 
 export function setDetailsAvailable(value) {
+  console.log("sandeep says", value);
   return {
     type: SET_DETAILS_AVAILABLE_BLOOD,
-    value: value,
+    bloodReceiver: value.bloodReceiver,
+    bloodType: value.bloodType,
+    detailsAvailable: value.detailsAvailable,
+    distanceWillingToTravel: value.distanceWillingToTravel,
+    documentURI: value.documentURI,
+    hospitalName: value.hospitalName,
+    isActive: value.isActive,
+    latitude: value.latitude,
+    longitude: value.longitude,
+    mobileNumber: value.mobileNumber,
+    pickUpDrop: value.pickUpDrop,
+    recoveryDate: value.recoveryDate,
   };
 }

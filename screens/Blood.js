@@ -12,7 +12,6 @@ import { Avatar, Card, Title, Paragraph, Portal } from "react-native-paper";
 import { Button, Text, TextInput, Chip, Switch } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { connect } from "react-redux";
-import Header from "../components/Header";
 import ImageButton from "../components/ImageButton";
 import {
   setBloodRecieverOrDoner,
@@ -81,27 +80,37 @@ function Blood(props) {
                       </Button>
                       <Image
                         style={{ height: "100%", width: "100%" }}
-                        source={{ uri: "https://picsum.photos/700" }}
+                        source={{
+                          uri:
+                            "https://sitemadison585.weebly.com/uploads/1/2/3/8/123808504/206896313.jpg",
+                        }}
                       />
                     </Modal>
                   </Portal>
                 </View>
                 <Card>
                   <Card.Title
-                    title="Card Title"
-                    subtitle="Card Subtitle"
-                    left={LeftContent}
+                    title="A+ blood group"
+                    subtitle="Medanta Gurgaon"
                   />
                   <Card.Content>
-                    <Title>Card title</Title>
-                    <Paragraph>Card content</Paragraph>
+                    <Title>55 Kms</Title>
+                    <Paragraph>
+                      Plasma needed urgently for my friends mother
+                    </Paragraph>
+                    <Paragraph>Pickup/Drop : Yes</Paragraph>
                   </Card.Content>
                   <TouchableHighlight
                     onPress={() => {
                       setVisible(true);
                     }}
                   >
-                    <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+                    <Card.Cover
+                      source={{
+                        uri:
+                          "https://sitemadison585.weebly.com/uploads/1/2/3/8/123808504/206896313.jpg",
+                      }}
+                    />
                   </TouchableHighlight>
                   <Card.Actions>
                     <Button>Accept</Button>
@@ -126,7 +135,7 @@ function Blood(props) {
               <View style={styles.container}>
                 <Text style={{ fontSize: 20 }}>
                   Blood ({!bloodReducer.bloodReciever && <Text>Donate</Text>}
-                  {bloodReducer.bloodReciever && <Text>Recieve</Text>})
+                  {bloodReducer.bloodReciever && <Text>Receive</Text>})
                 </Text>
                 <Switch
                   value={bloodReducer.bloodReciever}
@@ -139,7 +148,9 @@ function Blood(props) {
               </View>
               {!bloodReducer.bloodReciever && (
                 <Card>
-                  <Text>Blood type</Text>
+                  <Text style={{ textAlign: "center" }}>
+                    Whats your blood type ?
+                  </Text>
                   <View style={styles.container}>
                     {bloodReducer.bloodType === 0 ? (
                       <>
@@ -359,7 +370,7 @@ function Blood(props) {
                       />
                     )}
                     <TextInput
-                      label={"Distance you are willing to travel in KMS"}
+                      label={"Distance you are willing to travel (Kms)"}
                       keyboardType="number-pad"
                       maxLength={4}
                       onChangeText={(value) => {
@@ -374,7 +385,9 @@ function Blood(props) {
               )}
               {bloodReducer.bloodReciever && (
                 <Card>
-                  <Text>Blood type</Text>
+                  <Text style={{ textAlign: "center" }}>
+                    Whats your blood type ?
+                  </Text>
                   <View style={styles.container}>
                     {bloodReducer.bloodType === 0 ? (
                       <>
@@ -568,7 +581,7 @@ function Blood(props) {
 
                   <View>
                     <TextInput
-                      label={"Hospital Name & address"}
+                      label={"Hospital name with address"}
                       value={bloodReducer.hospitalName}
                       onChangeText={(value) => {
                         dispatch(setHospitalName(value));
@@ -584,7 +597,7 @@ function Blood(props) {
                       }}
                     />
                     <Text>
-                      ({bloodReducer.pickUpDrop && <Text>Yes I Can</Text>}
+                      ({bloodReducer.pickUpDrop && <Text>Yes I can</Text>}
                       {!bloodReducer.pickUpDrop && <Text>No I can't</Text>})
                     </Text>
                   </View>
