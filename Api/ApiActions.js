@@ -22,7 +22,7 @@ export const saveBloodInformation = async (value, number, date) => {
     data.bloodReceiver = data.bloodReciever;
     data.documentURI = await data.documentUri;
     data.recoveryDate = JSON.parse(JSON.stringify(date));
-
+    data.detailsAvailable = true;
     if (data.distanceWillingToTravel === undefined) {
       data.distanceWillingToTravel = 0;
     }
@@ -36,17 +36,18 @@ export const saveBloodInformation = async (value, number, date) => {
     if (data.documentURI === null) {
       data.documentURI = "";
     }
+    if (data.hospitalName === undefined) {
+      data.hospitalName = "";
+    }
+
     delete data.documentUri;
     delete data.bloodReciever;
     console.log(data);
 
     let resp = await axios.post(SAVE_USER_DETAILS_BLOOD, data);
-    console.log(resp);
   } catch (e) {
     console.log(e);
   }
-
-  console.log(JSON.stringify(data));
 
   return response;
 };

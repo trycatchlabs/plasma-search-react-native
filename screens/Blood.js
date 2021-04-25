@@ -1,4 +1,5 @@
 import * as React from "react";
+import { BackHandler } from "react-native";
 import { useState } from "react";
 import {
   ScrollView,
@@ -7,6 +8,7 @@ import {
   TouchableHighlight,
   Modal,
   Image,
+  Alert,
 } from "react-native";
 import { Card, Title, Paragraph, Portal } from "react-native-paper";
 import { Button, Text, TextInput, Chip, Switch } from "react-native-paper";
@@ -27,6 +29,9 @@ function Blood(props) {
   const [visible, setVisible] = React.useState(false);
   const [show, setShow] = React.useState(false);
   const [mode, setMode] = React.useState("date");
+  const [refresh, setrefresh] = useState("");
+
+  React.useEffect(() => {}, [refresh]);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -56,7 +61,7 @@ function Blood(props) {
       <ScrollView>
         {bloodReducer.detailsAvailable ? (
           <>
-            {bloodReducer.bloodReciever === false ? (
+            {bloodReducer.bloodReceiver === false ? (
               <>
                 <View>
                   <Portal>
@@ -612,6 +617,19 @@ function Blood(props) {
                       bloodReducer,
                       AuthenticationReducer.mobilenumber,
                       date
+                    );
+
+                    Alert.alert(
+                      "Please reopen the app for better experience",
+                      "please remove app from background and reopen the app",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            BackHandler.exitApp();
+                          },
+                        },
+                      ]
                     );
                   }}
                 >
