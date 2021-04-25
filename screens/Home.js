@@ -1,5 +1,4 @@
 import * as React from "react";
-import { StyleSheet, View } from "react-native";
 import { BottomNavigation, Text } from "react-native-paper";
 import BottomNav from "../components/BottomNav";
 import Header from "../components/Header";
@@ -12,13 +11,48 @@ import Otp from "./Otp";
 import ForgotPassword from "./ForgotPassword";
 import Onboarding from "react-native-onboarding-swiper";
 import SplashScreen from "./SplashScreen";
+import { connect } from "react-redux";
+import { LoginUser } from "../actions/AuthenticationActions";
+import axios from "axios";
+import { getUserInformation } from "../Api/ApiActions";
+import {
+  setDetailsAvailable,
+  setMobileNumberBlood,
+} from "../actions/bloodActions";
+import { getMobileNumber } from "../Api/LocalStorageActions";
 
 const Stack = createStackNavigator();
 
-function Home() {
+function Home(props) {
   const [onboarding, setOnboarding] = useState(true);
-  const [signedIn, setSignIn] = useState(true);
-  const [splash, setSplash] = useState(false);
+  const [signedIn, setSignIn] = useState(false);
+  const [splash, setSplash] = useState(true);
+  const [mobileNumber, setMobileNumber] = useState(null);
+  const { dispatch } = props;
+
+  React.useEffect(() => {
+    getMobileNumber().then((num) => {
+      setMobileNumber(num);
+      dispatch(LoginUser(num));
+    });
+
+    getUserInformation(mobileNumber).then((value) => {
+      dispatch(setDetailsAvailable(value));
+      if (mobileNumber !== null) {
+        setSignIn(true);
+        dispatch(LoginUser(mobileNumber));
+
+        setTimeout(() => {
+          setSplash(false);
+        }, 1000);
+      } else {
+        setSignIn(false);
+        setTimeout(() => {
+          setSplash(false);
+        }, 1000);
+      }
+    });
+  }, [mobileNumber, signedIn]);
 
   return (
     <>
@@ -91,4 +125,8 @@ function Home() {
   );
 }
 
-export default Home;
+export function mapToState(state) {
+  return state;
+}
+
+export default connect(mapToState)(Home);

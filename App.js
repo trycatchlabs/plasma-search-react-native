@@ -12,14 +12,13 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "teal",
+    primary: "orange",
     accent: "#00c78e",
   },
 };
 
 const store = newstore();
 function App() {
-  console.log(store.getState());
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>

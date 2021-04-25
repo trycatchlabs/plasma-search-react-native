@@ -1,42 +1,91 @@
 import * as React from "react";
-import { useState } from "react";
+import { BackHandler } from "react-native";
+import { useState, useEffect } from "react";
+import * as Location from "expo-location";
 import {
   ScrollView,
   View,
   StyleSheet,
-  TouchableHighlight,
   Modal,
   Image,
+  Alert,
 } from "react-native";
-import { Avatar, Card, Title, Paragraph, Portal } from "react-native-paper";
+import { Card, Title, Paragraph, Portal } from "react-native-paper";
 import { Button, Text, TextInput, Chip, Switch } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { connect } from "react-redux";
-import Header from "../components/Header";
 import ImageButton from "../components/ImageButton";
 import {
   setBloodRecieverOrDoner,
   setBloodType,
-  setRecoveryDate,
   setDistanceWillingTotravel,
   setHospitalName,
+  setLatitudeAndLongitude,
   setPickUpDropStatus,
-  setDetailsAvailable,
 } from "../actions/bloodActions";
+import {
+  findDonorAcceptedData,
+  performPairMatching,
+  requestDonor,
+  saveBloodInformation,
+} from "../Api/ApiActions";
+import { showMatchDetailsToDonate } from "../Api/ApiActions";
 
 function Blood(props) {
   const [cardurl, setCardUrl] = useState("");
   const [visible, setVisible] = React.useState(false);
   const [show, setShow] = React.useState(false);
   const [mode, setMode] = React.useState("date");
+  const [message, setMessage] = useState("");
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const { bloodReducer, AuthenticationReducer, dispatch } = props;
+  const [receiversData, setRecieversData] = useState([]);
+  const [donorResponseData, setDonorResponseData] = useState([]);
+  const [accepted, setAccepted] = useState(false);
 
+  let lat;
+  let long;
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+    (async () => {
+      let value = await showMatchDetailsToDonate(
+        AuthenticationReducer.mobilenumber
+      );
+      setRecieversData(value);
+      console.log(value);
+    })();
+    (async () => {
+      let value = await findDonorAcceptedData(
+        AuthenticationReducer.mobilenumber
+      );
+      setDonorResponseData(value);
+      console.log(donorResponseData);
+    })();
+  }, [accepted]);
+
+  let text = "Collecting location information please wait";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    const { latitude, longitude } = location.coords;
+    text = `latitude = ${latitude} and longitude = ${longitude}`;
+    lat = latitude;
+    long = longitude;
+  }
   const [date, setDate] = useState(new Date());
-  const LeftContent = (props) => <Avatar.Icon {...props} icon="account" />;
-
-  const { bloodReducer, dispatch } = props;
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -59,8 +108,66 @@ function Blood(props) {
       <ScrollView>
         {bloodReducer.detailsAvailable ? (
           <>
-            {bloodReducer.bloodReciever === false ? (
+            {bloodReducer.bloodReceiver === false ? (
               <>
+                {receiversData.map((cardData, index) => {
+                  return (
+                    <View key={index}>
+                      <Card style={{ padding: 10, marginBottom: 10 }}>
+                        <Card.Title
+                          title={`${cardData.bloodType} blood group to donate`}
+                          subtitle={cardData.hospitalName}
+                        />
+                        <Card.Content>
+                          <Title>{cardData.distance} (Kms)</Title>
+                          <Paragraph>{cardData.message}</Paragraph>
+                          <Paragraph>
+                            Pickup/Drop :{" "}
+                            {cardData.pickUpDrop === 1 ? "Yes" : "No"}
+                          </Paragraph>
+                        </Card.Content>
+                        {/* <TouchableHighlight
+                          onPress={() => {
+                            setVisible(true);
+                          }}
+                        >
+                          <Card.Cover
+                            source={{
+                              uri:
+                                cardData.documentURI !== ""
+                                  ? cardData.documentURI
+                                  : "https://covaid.trycatchlabs.com/",
+                            }}
+                          />
+                        </TouchableHighlight> */}
+                        <Card.Actions>
+                          {cardData.isAccepted === 0 ? (
+                            <Button
+                              onPress={() => {
+                                performPairMatching(
+                                  AuthenticationReducer.mobilenumber,
+                                  cardData.mobileNumber
+                                );
+
+                                Alert.alert(
+                                  "We have informed the respective reciever",
+                                  "give us some time to cordinate with them"
+                                );
+                                setAccepted(true);
+                              }}
+                            >
+                              Accept
+                            </Button>
+                          ) : (
+                            <>
+                              <Title>Call Patient at {cardData.receiver}</Title>
+                            </>
+                          )}
+                        </Card.Actions>
+                      </Card>
+                    </View>
+                  );
+                })}
                 <View>
                   <Portal>
                     <Modal
@@ -79,43 +186,63 @@ function Blood(props) {
                       >
                         Go Back
                       </Button>
-                      <Image
+                      {/* <Image
                         style={{ height: "100%", width: "100%" }}
-                        source={{ uri: "https://picsum.photos/700" }}
-                      />
+                        source={{
+                          uri:
+                            "https://sitemadison585.weebly.com/uploads/1/2/3/8/123808504/206896313.jpg",
+                        }}
+                      /> */}
                     </Modal>
                   </Portal>
                 </View>
-                <Card>
-                  <Card.Title
-                    title="Card Title"
-                    subtitle="Card Subtitle"
-                    left={LeftContent}
-                  />
-                  <Card.Content>
-                    <Title>Card title</Title>
-                    <Paragraph>Card content</Paragraph>
-                  </Card.Content>
-                  <TouchableHighlight
-                    onPress={() => {
-                      setVisible(true);
-                    }}
-                  >
-                    <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
-                  </TouchableHighlight>
-                  <Card.Actions>
-                    <Button>Accept</Button>
-                  </Card.Actions>
-                </Card>
               </>
             ) : (
               <>
                 <View>
                   <TextInput
-                    label={"Enter Message (Max char 160)"}
+                    label={"Enter Details of your requirement (Max char 160)"}
                     maxLength={160}
+                    value={message}
+                    onChangeText={(value) => {
+                      setMessage(value);
+                    }}
                   ></TextInput>
-                  <Button mode="contained">Search</Button>
+                  <Button
+                    mode="contained"
+                    onPress={() => {
+                      requestDonor(
+                        AuthenticationReducer.mobilenumber,
+                        message,
+                        lat,
+                        long
+                      );
+                    }}
+                  >
+                    Send personal message
+                  </Button>
+                  {donorResponseData.length === 0 ? (
+                    <>
+                      <Text>You can make a request</Text>
+                    </>
+                  ) : (
+                    <>
+                      {donorResponseData.length === 1 &&
+                      donorResponseData[0].isAccepted === 1 ? (
+                        <Text>
+                          This is your donor call him at{" "}
+                          {donorResponseData[0].donor}
+                        </Text>
+                      ) : (
+                        <>
+                          <Text>
+                            We have made your request to{" "}
+                            {donorResponseData.length} (donor)
+                          </Text>
+                        </>
+                      )}
+                    </>
+                  )}
                 </View>
               </>
             )}
@@ -126,7 +253,7 @@ function Blood(props) {
               <View style={styles.container}>
                 <Text style={{ fontSize: 20 }}>
                   Blood ({!bloodReducer.bloodReciever && <Text>Donate</Text>}
-                  {bloodReducer.bloodReciever && <Text>Recieve</Text>})
+                  {bloodReducer.bloodReciever && <Text>Receive</Text>})
                 </Text>
                 <Switch
                   value={bloodReducer.bloodReciever}
@@ -139,7 +266,9 @@ function Blood(props) {
               </View>
               {!bloodReducer.bloodReciever && (
                 <Card>
-                  <Text>Blood type</Text>
+                  <Text style={{ textAlign: "center" }}>
+                    Whats your blood type ?
+                  </Text>
                   <View style={styles.container}>
                     {bloodReducer.bloodType === 0 ? (
                       <>
@@ -359,7 +488,7 @@ function Blood(props) {
                       />
                     )}
                     <TextInput
-                      label={"Distance you are willing to travel in KMS"}
+                      label={"Distance you are willing to travel (Kms)"}
                       keyboardType="number-pad"
                       maxLength={4}
                       onChangeText={(value) => {
@@ -369,12 +498,14 @@ function Blood(props) {
                     ></TextInput>
                   </View>
 
-                  <ImageButton></ImageButton>
+                  {/* <ImageButton></ImageButton> */}
                 </Card>
               )}
               {bloodReducer.bloodReciever && (
                 <Card>
-                  <Text>Blood type</Text>
+                  <Text style={{ textAlign: "center" }}>
+                    Whats your blood type ?
+                  </Text>
                   <View style={styles.container}>
                     {bloodReducer.bloodType === 0 ? (
                       <>
@@ -568,7 +699,7 @@ function Blood(props) {
 
                   <View>
                     <TextInput
-                      label={"Hospital Name & address"}
+                      label={"Hospital name with address"}
                       value={bloodReducer.hospitalName}
                       onChangeText={(value) => {
                         dispatch(setHospitalName(value));
@@ -584,11 +715,14 @@ function Blood(props) {
                       }}
                     />
                     <Text>
-                      ({bloodReducer.pickUpDrop && <Text>Yes I Can</Text>}
+                      ({bloodReducer.pickUpDrop && <Text>Yes I can</Text>}
                       {!bloodReducer.pickUpDrop && <Text>No I can't</Text>})
                     </Text>
                   </View>
-                  <ImageButton></ImageButton>
+                  {/* <ImageButton></ImageButton> */}
+                  <View>
+                    <Text style={styles.paragraph}>{text}</Text>
+                  </View>
                 </Card>
               )}
               <Card.Actions>
@@ -596,8 +730,27 @@ function Blood(props) {
                   style={{ width: "100%" }}
                   mode="contained"
                   onPress={() => {
-                    dispatch(setRecoveryDate(date));
-                    dispatch(setDetailsAvailable(true));
+                    alert(AuthenticationReducer.mobilenumber);
+                    saveBloodInformation(
+                      bloodReducer,
+                      AuthenticationReducer.mobilenumber,
+                      date,
+                      lat,
+                      long
+                    );
+
+                    Alert.alert(
+                      "Please reopen the app",
+                      "please remove app from background and reopen the app",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            BackHandler.exitApp();
+                          },
+                        },
+                      ]
+                    );
                   }}
                 >
                   Save
