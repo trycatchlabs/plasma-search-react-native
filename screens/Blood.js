@@ -6,7 +6,6 @@ import {
   ScrollView,
   View,
   StyleSheet,
-  TouchableHighlight,
   Modal,
   Image,
   Alert,
@@ -24,7 +23,13 @@ import {
   setLatitudeAndLongitude,
   setPickUpDropStatus,
 } from "../actions/bloodActions";
-import { requestDonor, saveBloodInformation } from "../Api/ApiActions";
+import {
+  findDonorAcceptedData,
+  performPairMatching,
+  requestDonor,
+  saveBloodInformation,
+} from "../Api/ApiActions";
+import { showMatchDetailsToDonate } from "../Api/ApiActions";
 
 function Blood(props) {
   const [cardurl, setCardUrl] = useState("");
@@ -38,6 +43,9 @@ function Blood(props) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const { bloodReducer, AuthenticationReducer, dispatch } = props;
+  const [receiversData, setRecieversData] = useState([]);
+  const [donorResponseData, setDonorResponseData] = useState([]);
+  const [accepted, setAccepted] = useState(false);
 
   let lat;
   let long;
@@ -52,7 +60,21 @@ function Blood(props) {
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
-  }, []);
+    (async () => {
+      let value = await showMatchDetailsToDonate(
+        AuthenticationReducer.mobilenumber
+      );
+      setRecieversData(value);
+      console.log(value);
+    })();
+    (async () => {
+      let value = await findDonorAcceptedData(
+        AuthenticationReducer.mobilenumber
+      );
+      setDonorResponseData(value);
+      console.log(donorResponseData);
+    })();
+  }, [accepted]);
 
   let text = "Collecting location information please wait";
   if (errorMsg) {
@@ -88,6 +110,64 @@ function Blood(props) {
           <>
             {bloodReducer.bloodReceiver === false ? (
               <>
+                {receiversData.map((cardData, index) => {
+                  return (
+                    <View key={index}>
+                      <Card style={{ padding: 10, marginBottom: 10 }}>
+                        <Card.Title
+                          title={`${cardData.bloodType} blood group to donate`}
+                          subtitle={cardData.hospitalName}
+                        />
+                        <Card.Content>
+                          <Title>{cardData.distance} (Kms)</Title>
+                          <Paragraph>{cardData.message}</Paragraph>
+                          <Paragraph>
+                            Pickup/Drop :{" "}
+                            {cardData.pickUpDrop === 1 ? "Yes" : "No"}
+                          </Paragraph>
+                        </Card.Content>
+                        {/* <TouchableHighlight
+                          onPress={() => {
+                            setVisible(true);
+                          }}
+                        >
+                          <Card.Cover
+                            source={{
+                              uri:
+                                cardData.documentURI !== ""
+                                  ? cardData.documentURI
+                                  : "https://covaid.trycatchlabs.com/",
+                            }}
+                          />
+                        </TouchableHighlight> */}
+                        <Card.Actions>
+                          {cardData.isAccepted === 0 ? (
+                            <Button
+                              onPress={() => {
+                                performPairMatching(
+                                  AuthenticationReducer.mobilenumber,
+                                  cardData.mobileNumber
+                                );
+
+                                Alert.alert(
+                                  "We have informed the respective reciever",
+                                  "give us some time to cordinate with them"
+                                );
+                                setAccepted(true);
+                              }}
+                            >
+                              Accept
+                            </Button>
+                          ) : (
+                            <>
+                              <Title>Call Patient at {cardData.receiver}</Title>
+                            </>
+                          )}
+                        </Card.Actions>
+                      </Card>
+                    </View>
+                  );
+                })}
                 <View>
                   <Portal>
                     <Modal
@@ -106,44 +186,16 @@ function Blood(props) {
                       >
                         Go Back
                       </Button>
-                      <Image
+                      {/* <Image
                         style={{ height: "100%", width: "100%" }}
                         source={{
                           uri:
                             "https://sitemadison585.weebly.com/uploads/1/2/3/8/123808504/206896313.jpg",
                         }}
-                      />
+                      /> */}
                     </Modal>
                   </Portal>
                 </View>
-                <Card style={{ padding: 10, marginBottom: 10 }}>
-                  <Card.Title
-                    title="A+ blood group"
-                    subtitle="Medanta Gurgaon"
-                  />
-                  <Card.Content>
-                    <Title>55 Kms</Title>
-                    <Paragraph>
-                      Plasma needed urgently for my friends mother
-                    </Paragraph>
-                    <Paragraph>Pickup/Drop : Yes</Paragraph>
-                  </Card.Content>
-                  <TouchableHighlight
-                    onPress={() => {
-                      setVisible(true);
-                    }}
-                  >
-                    <Card.Cover
-                      source={{
-                        uri:
-                          "https://sitemadison585.weebly.com/uploads/1/2/3/8/123808504/206896313.jpg",
-                      }}
-                    />
-                  </TouchableHighlight>
-                  <Card.Actions>
-                    <Button>Accept</Button>
-                  </Card.Actions>
-                </Card>
               </>
             ) : (
               <>
@@ -169,6 +221,28 @@ function Blood(props) {
                   >
                     Send personal message
                   </Button>
+                  {donorResponseData.length === 0 ? (
+                    <>
+                      <Text>You can make a request</Text>
+                    </>
+                  ) : (
+                    <>
+                      {donorResponseData.length === 1 &&
+                      donorResponseData[0].isAccepted === 1 ? (
+                        <Text>
+                          This is your donor call him at{" "}
+                          {donorResponseData[0].donor}
+                        </Text>
+                      ) : (
+                        <>
+                          <Text>
+                            We have made your request to{" "}
+                            {donorResponseData.length} (donor)
+                          </Text>
+                        </>
+                      )}
+                    </>
+                  )}
                 </View>
               </>
             )}
@@ -424,7 +498,7 @@ function Blood(props) {
                     ></TextInput>
                   </View>
 
-                  <ImageButton></ImageButton>
+                  {/* <ImageButton></ImageButton> */}
                 </Card>
               )}
               {bloodReducer.bloodReciever && (
@@ -645,7 +719,7 @@ function Blood(props) {
                       {!bloodReducer.pickUpDrop && <Text>No I can't</Text>})
                     </Text>
                   </View>
-                  <ImageButton></ImageButton>
+                  {/* <ImageButton></ImageButton> */}
                   <View>
                     <Text style={styles.paragraph}>{text}</Text>
                   </View>

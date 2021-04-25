@@ -1,8 +1,11 @@
 import axios from "axios";
 import {
+  GET_DONATION_REQUEST_BLOOD,
   GET_USER_DETAILS_BLOOD,
+  PAIR_FORMATION_API_BLOOD,
   SAVE_USER_DETAILS_BLOOD,
   SEND_REQUEST_FOR_BLOOD,
+  GET_RECIEVE_REQUEST_BLOOD,
 } from "./Endpoints";
 
 export const getUserInformation = async (mobilenumber) => {
@@ -78,4 +81,32 @@ export const requestDonor = async (mobileNumber, message, lat, long) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+export const showMatchDetailsToDonate = async (mobileNumber) => {
+  try {
+    let resp = await axios.get(`${GET_DONATION_REQUEST_BLOOD}${mobileNumber}`);
+    return resp.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const performPairMatching = async (donor, receiver) => {
+  try {
+    let resp = await axios.post(
+      `${PAIR_FORMATION_API_BLOOD}${donor}/${receiver}`
+    );
+    return resp.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const findDonorAcceptedData = async (mobileNumber) => {
+  let value;
+  try {
+    value = await axios.get(`${GET_RECIEVE_REQUEST_BLOOD}${mobileNumber}`);
+  } catch (e) {}
+  return value.data;
 };
