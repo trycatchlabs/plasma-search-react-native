@@ -16,8 +16,8 @@ import { LoginUser } from "../actions/AuthenticationActions";
 import axios from "axios";
 import { getUserInformation } from "../Api/ApiActions";
 import {
-  setBloodRecieverOrDoner,
   setDetailsAvailable,
+  setMobileNumberBlood,
 } from "../actions/bloodActions";
 import { getMobileNumber } from "../Api/LocalStorageActions";
 
@@ -34,17 +34,18 @@ function Home(props) {
     getMobileNumber().then((num) => {
       setMobileNumber(num);
     });
+
     getUserInformation(mobileNumber).then((value) => {
       dispatch(setDetailsAvailable(value));
       if (mobileNumber !== null) {
         setSignIn(true);
+        dispatch(LoginUser(mobileNumber));
 
         setTimeout(() => {
           setSplash(false);
         }, 1000);
       } else {
         setSignIn(false);
-
         setTimeout(() => {
           setSplash(false);
         }, 1000);

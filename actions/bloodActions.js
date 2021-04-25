@@ -5,6 +5,7 @@ import {
   SET_DISTANCE_TRAVEL_BLOOD,
   SET_ENTIRE_DETAILS_BLOOD,
   SET_HOSPITAL_NAME_BLOOD,
+  SET_MOBILE_NUMBER,
   SET_PICKUP_SERVICE_BLOOD,
 } from "./constants";
 
@@ -18,6 +19,13 @@ export function setBloodRecieverOrDoner(value) {
 export function setBloodType(value) {
   return {
     type: SET_BLOOD_TYPE_BLOOD,
+    value: value,
+  };
+}
+
+export function setMobileNumberBlood(value) {
+  return {
+    type: SET_MOBILE_NUMBER,
     value: value,
   };
 }
