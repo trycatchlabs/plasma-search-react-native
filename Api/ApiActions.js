@@ -1,5 +1,9 @@
 import axios from "axios";
-import { GET_USER_DETAILS_BLOOD, SAVE_USER_DETAILS_BLOOD } from "./Endpoints";
+import {
+  GET_USER_DETAILS_BLOOD,
+  SAVE_USER_DETAILS_BLOOD,
+  SEND_REQUEST_FOR_BLOOD,
+} from "./Endpoints";
 
 export const getUserInformation = async (mobilenumber) => {
   let value;
@@ -12,7 +16,13 @@ export const getUserInformation = async (mobilenumber) => {
   return value.data;
 };
 
-export const saveBloodInformation = async (value, number, date) => {
+export const saveBloodInformation = async (
+  value,
+  number,
+  date,
+  latitude,
+  longitude
+) => {
   let response;
   let data;
   try {
@@ -23,6 +33,8 @@ export const saveBloodInformation = async (value, number, date) => {
     data.documentURI = await data.documentUri;
     data.recoveryDate = JSON.parse(JSON.stringify(date));
     data.detailsAvailable = true;
+    data.latitude = latitude;
+    data.longitude = longitude;
     if (data.distanceWillingToTravel === undefined) {
       data.distanceWillingToTravel = 0;
     }
@@ -50,4 +62,20 @@ export const saveBloodInformation = async (value, number, date) => {
   }
 
   return response;
+};
+
+export const requestDonor = async (mobileNumber, message, lat, long) => {
+  try {
+    let requestBody = {
+      mobileNumber: mobileNumber,
+      bloodMessage: message,
+      latitude: lat,
+      longitude: long,
+    };
+    console.log(requestBody);
+    let resp = await axios.post(SEND_REQUEST_FOR_BLOOD, requestBody);
+    console.log(resp);
+  } catch (e) {
+    console.log(e);
+  }
 };

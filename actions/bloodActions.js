@@ -5,6 +5,7 @@ import {
   SET_DISTANCE_TRAVEL_BLOOD,
   SET_ENTIRE_DETAILS_BLOOD,
   SET_HOSPITAL_NAME_BLOOD,
+  SET_LATITUDE_AND_LONGITUDE,
   SET_MOBILE_NUMBER,
   SET_PICKUP_SERVICE_BLOOD,
 } from "./constants";
@@ -74,6 +75,16 @@ export function setDetailsAvailable(value) {
       mobileNumber: value.mobileNumber,
       pickUpDrop: value.pickUpDrop === 1 ? true : false,
       recoveryDate: value.recoveryDate,
+    },
+  };
+}
+
+export function setLatitudeAndLongitude(lat, long) {
+  return {
+    type: SET_LATITUDE_AND_LONGITUDE,
+    value: {
+      lat: lat,
+      long: long,
     },
   };
 }

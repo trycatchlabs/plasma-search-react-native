@@ -6,6 +6,7 @@ import {
   SET_DISTANCE_TRAVEL_BLOOD,
   SET_ENTIRE_DETAILS_BLOOD,
   SET_HOSPITAL_NAME_BLOOD,
+  SET_LATITUDE_AND_LONGITUDE,
   SET_MOBILE_NUMBER,
   SET_PICKUP_SERVICE_BLOOD,
 } from "../actions/constants";
@@ -19,6 +20,8 @@ let initialState = {
   recoveryDate: null,
   distanceWillingToTravel: null,
   detailsAvailable: false,
+  latitude: 0,
+  longitude: 0,
 };
 
 export default function bloodReducer(state = initialState, action) {
@@ -58,6 +61,13 @@ export default function bloodReducer(state = initialState, action) {
       return {
         ...state,
         ...action.value,
+      };
+
+    case SET_LATITUDE_AND_LONGITUDE:
+      return {
+        ...state,
+        latitude: action.value.lat,
+        longitude: action.value.long,
       };
     default:
       return state;

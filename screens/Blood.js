@@ -1,6 +1,7 @@
 import * as React from "react";
 import { BackHandler } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as Location from "expo-location";
 import {
   ScrollView,
   View,
@@ -20,25 +21,49 @@ import {
   setBloodType,
   setDistanceWillingTotravel,
   setHospitalName,
+  setLatitudeAndLongitude,
   setPickUpDropStatus,
 } from "../actions/bloodActions";
-import { saveBloodInformation } from "../Api/ApiActions";
+import { requestDonor, saveBloodInformation } from "../Api/ApiActions";
 
 function Blood(props) {
   const [cardurl, setCardUrl] = useState("");
   const [visible, setVisible] = React.useState(false);
   const [show, setShow] = React.useState(false);
   const [mode, setMode] = React.useState("date");
-  const [refresh, setrefresh] = useState("");
-
-  React.useEffect(() => {}, [refresh]);
+  const [message, setMessage] = useState("");
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
-
-  const [date, setDate] = useState(new Date());
-
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const { bloodReducer, AuthenticationReducer, dispatch } = props;
+
+  let lat;
+  let long;
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  let text = "Collecting location information please wait";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    const { latitude, longitude } = location.coords;
+    text = `latitude = ${latitude} and longitude = ${longitude}`;
+    lat = latitude;
+    long = longitude;
+  }
+  const [date, setDate] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -91,7 +116,7 @@ function Blood(props) {
                     </Modal>
                   </Portal>
                 </View>
-                <Card>
+                <Card style={{ padding: 10, marginBottom: 10 }}>
                   <Card.Title
                     title="A+ blood group"
                     subtitle="Medanta Gurgaon"
@@ -124,10 +149,26 @@ function Blood(props) {
               <>
                 <View>
                   <TextInput
-                    label={"Enter Message (Max char 160)"}
+                    label={"Enter Details of your requirement (Max char 160)"}
                     maxLength={160}
+                    value={message}
+                    onChangeText={(value) => {
+                      setMessage(value);
+                    }}
                   ></TextInput>
-                  <Button mode="contained">Search</Button>
+                  <Button
+                    mode="contained"
+                    onPress={() => {
+                      requestDonor(
+                        AuthenticationReducer.mobilenumber,
+                        message,
+                        lat,
+                        long
+                      );
+                    }}
+                  >
+                    Send personal message
+                  </Button>
                 </View>
               </>
             )}
@@ -605,6 +646,9 @@ function Blood(props) {
                     </Text>
                   </View>
                   <ImageButton></ImageButton>
+                  <View>
+                    <Text style={styles.paragraph}>{text}</Text>
+                  </View>
                 </Card>
               )}
               <Card.Actions>
@@ -616,11 +660,13 @@ function Blood(props) {
                     saveBloodInformation(
                       bloodReducer,
                       AuthenticationReducer.mobilenumber,
-                      date
+                      date,
+                      lat,
+                      long
                     );
 
                     Alert.alert(
-                      "Please reopen the app for better experience",
+                      "Please reopen the app",
                       "please remove app from background and reopen the app",
                       [
                         {
