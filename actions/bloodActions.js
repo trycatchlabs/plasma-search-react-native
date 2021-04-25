@@ -2,8 +2,8 @@ import {
   SET_BLOOD_RECIEVER_BLOOD,
   SET_BLOOD_TYPE_BLOOD,
   SET_DATE_BLOOD,
-  SET_DETAILS_AVAILABLE_BLOOD,
   SET_DISTANCE_TRAVEL_BLOOD,
+  SET_ENTIRE_DETAILS_BLOOD,
   SET_HOSPITAL_NAME_BLOOD,
   SET_PICKUP_SERVICE_BLOOD,
 } from "./constants";
@@ -51,20 +51,21 @@ export function setPickUpDropStatus(value) {
 }
 
 export function setDetailsAvailable(value) {
-  console.log("sandeep says", value);
   return {
-    type: SET_DETAILS_AVAILABLE_BLOOD,
-    bloodReceiver: value.bloodReceiver,
-    bloodType: value.bloodType,
-    detailsAvailable: value.detailsAvailable,
-    distanceWillingToTravel: value.distanceWillingToTravel,
-    documentURI: value.documentURI,
-    hospitalName: value.hospitalName,
-    isActive: value.isActive,
-    latitude: value.latitude,
-    longitude: value.longitude,
-    mobileNumber: value.mobileNumber,
-    pickUpDrop: value.pickUpDrop,
-    recoveryDate: value.recoveryDate,
+    type: SET_ENTIRE_DETAILS_BLOOD,
+    value: {
+      bloodReceiver: value.bloodReceiver === 1 ? true : false,
+      bloodType: value.bloodType,
+      detailsAvailable: value.detailsAvailable === 1 ? true : false,
+      distanceWillingToTravel: value.distanceWillingToTravel,
+      documentURI: value.documentURI,
+      hospitalName: value.hospitalName,
+      isActive: value.isActive === 1 ? true : false,
+      latitude: value.latitude,
+      longitude: value.longitude,
+      mobileNumber: value.mobileNumber,
+      pickUpDrop: value.pickUpDrop === 1 ? true : false,
+      recoveryDate: value.recoveryDate,
+    },
   };
 }

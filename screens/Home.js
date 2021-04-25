@@ -19,7 +19,6 @@ import { getUserInformation } from "../Api/ApiActions";
 import {
   setBloodRecieverOrDoner,
   setDetailsAvailable,
-  saveEntireDataInBloodReducer,
 } from "../actions/bloodActions";
 
 const Stack = createStackNavigator();
@@ -27,21 +26,17 @@ const Stack = createStackNavigator();
 function Home(props) {
   const [onboarding, setOnboarding] = useState(true);
   const [signedIn, setSignIn] = useState(false);
-  const [splash, setSplash] = useState(false);
+  const [splash, setSplash] = useState(true);
 
   const { dispatch } = props;
 
   React.useEffect(() => {
     dispatch(LoginUser("9080743231"));
     setSignIn(true);
-    getUserInformation("9080743231").then((value) => {
+    getUserInformation("9080743232").then((value) => {
       console.log(value);
-      dispatch(saveEntireDataInBloodReducer(value));
-      // dispatch(
-      //   setBloodRecieverOrDoner(value.bloodReceiver == 1 ? true : false)
-      // );
-      // dispatch(setDetailsAvailable(value.detailsAvailable == 1 ? true : false));
-      // console.log(value.bloodReceiver == 1 ? true : false);
+      dispatch(setDetailsAvailable(value));
+      setSplash(false);
     });
   }, [signedIn]);
 

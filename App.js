@@ -19,7 +19,6 @@ const theme = {
 
 const store = newstore();
 function App() {
-  console.log(store.getState());
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>

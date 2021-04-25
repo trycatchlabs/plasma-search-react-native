@@ -3,8 +3,8 @@ import {
   SET_BLOOD_RECIEVER_BLOOD,
   SET_BLOOD_TYPE_BLOOD,
   SET_DATE_BLOOD,
-  SET_DETAILS_AVAILABLE_BLOOD,
   SET_DISTANCE_TRAVEL_BLOOD,
+  SET_ENTIRE_DETAILS_BLOOD,
   SET_HOSPITAL_NAME_BLOOD,
   SET_PICKUP_SERVICE_BLOOD,
 } from "../actions/constants";
@@ -53,10 +53,10 @@ export default function bloodReducer(state = initialState, action) {
         ...state,
         pickUpDrop: action.value,
       };
-    case SET_DETAILS_AVAILABLE_BLOOD:
+    case SET_ENTIRE_DETAILS_BLOOD:
       return {
         ...state,
-        detailsAvailable: action.value,
+        ...action.value,
       };
     default:
       return state;
