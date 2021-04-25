@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const getMobileNumber = async () => {
   let mobileNumber;
   try {
-    let value = await AsyncStorage.setItem("mobileNumber", "9080743232");
+    let value = await AsyncStorage.setItem("mobileNumber", "1234567816");
     // AsyncStorage.removeItem("mobileNumber");
   } catch (e) {}
 

@@ -8,7 +8,7 @@ import {
   Modal,
   Image,
 } from "react-native";
-import { Avatar, Card, Title, Paragraph, Portal } from "react-native-paper";
+import { Card, Title, Paragraph, Portal } from "react-native-paper";
 import { Button, Text, TextInput, Chip, Switch } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { connect } from "react-redux";
@@ -16,12 +16,11 @@ import ImageButton from "../components/ImageButton";
 import {
   setBloodRecieverOrDoner,
   setBloodType,
-  setRecoveryDate,
   setDistanceWillingTotravel,
   setHospitalName,
   setPickUpDropStatus,
-  setDetailsAvailable,
 } from "../actions/bloodActions";
+import { saveBloodInformation } from "../Api/ApiActions";
 
 function Blood(props) {
   const [cardurl, setCardUrl] = useState("");
@@ -33,9 +32,8 @@ function Blood(props) {
   const hideModal = () => setVisible(false);
 
   const [date, setDate] = useState(new Date());
-  const LeftContent = (props) => <Avatar.Icon {...props} icon="account" />;
 
-  const { bloodReducer, dispatch } = props;
+  const { bloodReducer, AuthenticationReducer, dispatch } = props;
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -609,8 +607,12 @@ function Blood(props) {
                   style={{ width: "100%" }}
                   mode="contained"
                   onPress={() => {
-                    dispatch(setRecoveryDate(date));
-                    dispatch(setDetailsAvailable(true));
+                    alert(AuthenticationReducer.mobilenumber);
+                    saveBloodInformation(
+                      bloodReducer,
+                      AuthenticationReducer.mobilenumber,
+                      date
+                    );
                   }}
                 >
                   Save

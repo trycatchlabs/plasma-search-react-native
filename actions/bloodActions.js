@@ -66,7 +66,7 @@ export function setDetailsAvailable(value) {
       bloodType: value.bloodType,
       detailsAvailable: value.detailsAvailable === 1 ? true : false,
       distanceWillingToTravel: value.distanceWillingToTravel,
-      documentURI: value.documentURI,
+      documentURI: value.documentURI === null ? "" : value.documentURI,
       hospitalName: value.hospitalName,
       isActive: value.isActive === 1 ? true : false,
       latitude: value.latitude,

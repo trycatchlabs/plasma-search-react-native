@@ -33,6 +33,7 @@ function Home(props) {
   React.useEffect(() => {
     getMobileNumber().then((num) => {
       setMobileNumber(num);
+      dispatch(LoginUser(num));
     });
 
     getUserInformation(mobileNumber).then((value) => {

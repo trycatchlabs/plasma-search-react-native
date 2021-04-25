@@ -6,6 +6,6 @@ import reducers from "../reducers";
 let store;
 
 export default function newstore() {
-  store = createStore(reducers, applyMiddleware(thunk, logger));
+  store = createStore(reducers, applyMiddleware());
   return store;
 }
