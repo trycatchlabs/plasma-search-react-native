@@ -18,6 +18,7 @@ import ImageButton from "../components/ImageButton";
 import {
   setBloodRecieverOrDoner,
   setBloodType,
+  setDetailsAvailableBlood,
   setDistanceWillingTotravel,
   setHospitalName,
   setLatitudeAndLongitude,
@@ -110,6 +111,15 @@ function Blood(props) {
           <>
             {bloodReducer.bloodReceiver === false ? (
               <>
+                {receiversData.length === 0 && (
+                  <>
+                    <Title>
+                      Currently we dont have dont know any patients that are
+                      looking for blood plasma give us sometime we will get back
+                      to you. Thankyou for registering with us
+                    </Title>
+                  </>
+                )}
                 {receiversData.map((cardData, index) => {
                   return (
                     <View key={index}>
@@ -738,19 +748,19 @@ function Blood(props) {
                       lat,
                       long
                     );
-
-                    Alert.alert(
-                      "Please reopen the app",
-                      "please remove app from background and reopen the app",
-                      [
-                        {
-                          text: "OK",
-                          onPress: () => {
-                            BackHandler.exitApp();
-                          },
-                        },
-                      ]
-                    );
+                    dispatch(setDetailsAvailableBlood(true));
+                    // Alert.alert(
+                    //   "Please reopen the app",
+                    //   "please remove app from background and reopen the app",
+                    //   [
+                    //     {
+                    //       text: "OK",
+                    //       onPress: () => {
+                    //         BackHandler.exitApp();
+                    //       },
+                    //     },
+                    //   ]
+                    // );
                   }}
                 >
                   Save
