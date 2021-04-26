@@ -8,11 +8,12 @@ import { connect } from "react-redux";
 import AuthenticationReducer from "../reducers/Authentication";
 import { getMobileNumber } from "../Api/LocalStorageActions";
 import { LoginUser } from "../actions/AuthenticationActions";
+import { setDetailsAvailable } from "../actions/bloodActions";
 
 function Login(props) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
-  const { navigation } = props;
+  const { navigation, dispatch } = props;
 
   const [signedIn, setSignIn] = useState(false);
   const [splash, setSplash] = useState(true);
