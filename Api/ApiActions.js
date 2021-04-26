@@ -1,4 +1,6 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 import {
   GET_DONATION_REQUEST_BLOOD,
   GET_USER_DETAILS_BLOOD,
@@ -6,7 +8,10 @@ import {
   SAVE_USER_DETAILS_BLOOD,
   SEND_REQUEST_FOR_BLOOD,
   GET_RECIEVE_REQUEST_BLOOD,
+  REGISTER_USER,
+  LOGIN_USER,
 } from "./Endpoints";
+import { LoginUser } from "../actions/AuthenticationActions";
 
 export const getUserInformation = async (mobilenumber) => {
   let value;
@@ -109,4 +114,98 @@ export const findDonorAcceptedData = async (mobileNumber) => {
     value = await axios.get(`${GET_RECIEVE_REQUEST_BLOOD}${mobileNumber}`);
   } catch (e) {}
   return value.data;
+};
+
+//////// authentication actions
+export function validateEmail(email) {
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+export const userRegisterations = async (registerationsData) => {
+  let resp;
+  let value = false;
+  registerationsData.age = parseInt(registerationsData.age);
+  registerationsData.gender = registerationsData.gender === 0 ? false : true;
+
+  if (!validateEmail(registerationsData.email)) {
+    Alert.alert("Please enter valid email address");
+  } else if (registerationsData.mobileNumber.length !== 10) {
+    Alert.alert("Incorrect Mobile number");
+  } else if (registerationsData.weight < 50) {
+    Alert.alert("Sorry you cant donate as you dont reach minimum criteria");
+  } else {
+    try {
+      resp = await axios.post(REGISTER_USER, registerationsData).then((res) => {
+        return res.data;
+      });
+    } catch (e) {}
+  }
+  console.log(resp);
+
+  if (resp.status === "400") {
+    Alert.alert("User seems to be already registered please login");
+    return false;
+  } else if (resp.message === "OK") {
+    try {
+      await AsyncStorage.setItem(
+        "mobileNumber",
+        registerationsData.mobileNumber
+      );
+
+      return true;
+    } catch (e) {}
+  }
+};
+
+export const userLogout = async (mobileNumber) => {
+  try {
+    await AsyncStorage.removeItem("mobileNumber");
+
+    return true;
+  } catch (e) {}
+};
+
+// export const authenticatUser = async (details) => {
+//   console.log(details);
+//   let resp;
+//   try {
+//     resp = await axios.post(LOGIN_USER, details, {
+//       headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//     });
+//   } catch (e) {
+//     console.log(e);
+//   }
+//   console.log(resp);
+// };
+
+export const authenticatUser = async (detals) => {
+  var axios = require("axios");
+  var qs = require("qs");
+  var data = qs.stringify({
+    username: detals.username,
+    password: detals.password,
+  });
+  var config = {
+    method: "post",
+    url: LOGIN_USER,
+    headers: {
+      accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: data,
+  };
+
+  let resp = await axios(config)
+    .then(function (response) {
+      LoginUser(detals.username);
+      AsyncStorage.setItem("mobileNumber", detals.username);
+      console.log("loggedin");
+      return true;
+    })
+    .catch(function (error) {
+      return false;
+    });
+
+  return resp;
 };

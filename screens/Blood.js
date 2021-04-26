@@ -36,6 +36,7 @@ function Blood(props) {
   const [cardurl, setCardUrl] = useState("");
   const [visible, setVisible] = React.useState(false);
   const [show, setShow] = React.useState(false);
+  const [date, setDate] = useState(new Date());
   const [mode, setMode] = React.useState("date");
   const [message, setMessage] = useState("");
 
@@ -86,9 +87,9 @@ function Blood(props) {
     lat = latitude;
     long = longitude;
   }
-  const [date, setDate] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
+    console.log("sandeep says", selectedDate);
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
     setDate(currentDate);
@@ -101,7 +102,6 @@ function Blood(props) {
 
   const showDatepicker = () => {
     showMode("date");
-    console.log(date);
   };
 
   return (
@@ -487,16 +487,6 @@ function Blood(props) {
                       />
                     )}
 
-                    {show && (
-                      <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChange}
-                      />
-                    )}
                     <TextInput
                       label={"Distance you are willing to travel (Kms)"}
                       keyboardType="number-pad"
@@ -507,8 +497,6 @@ function Blood(props) {
                       value={bloodReducer.distanceWillingToTravel}
                     ></TextInput>
                   </View>
-
-                  {/* <ImageButton></ImageButton> */}
                 </Card>
               )}
               {bloodReducer.bloodReciever && (

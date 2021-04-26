@@ -1,100 +1,148 @@
-import React from "react";
-import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect } from "react";
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Button, TextInput, RadioButton, Text } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
+import { userRegisterations } from "../Api/ApiActions";
 
 function Register(props) {
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [name, setName] = useState(undefined);
+  const [email, setEmail] = useState(undefined);
+  const [location, setLocation] = useState(undefined);
+  const [gender, setGender] = useState(1);
+  const [age, setAge] = useState(0);
+  const [mobileNumber, setNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [gender, setGender] = React.useState(0);
-
+  const [weight, setWeight] = useState("");
+  const [login, setLogin] = useState(false);
   const { navigation } = props;
-
+  useEffect(() => {
+    console.log("loggedin");
+  }, [login]);
   return (
     <View>
-      <TextInput
-        placeholder={"Name"}
-        onChangeText={(nextState) => {
-          setMobileNumber(nextState);
-        }}
-      ></TextInput>
-      <TextInput
-        placeholder={"Email"}
-        onChangeText={(nextState) => {
-          setMobileNumber(nextState);
-        }}
-        keyboardType="email-address"
-      ></TextInput>
-      <TextInput
-        placeholder={"Location"}
-        onChangeText={(nextState) => {
-          setMobileNumber(nextState);
-        }}
-      ></TextInput>
-      <RadioButton.Group
-        onValueChange={(newValue) => setGender(newValue)}
-        value={gender}
-      >
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Pressable
-            onPress={() => {
-              setGender(0);
-            }}
-          >
-            <Text style={{ fontSize: 25 }}>Male</Text>
-          </Pressable>
-          <RadioButton value={0} />
-          <Pressable
-            onPress={() => {
-              setGender(1);
-            }}
-          >
-            <Text style={{ fontSize: 25 }}>Female</Text>
-          </Pressable>
-          <RadioButton value={1} />
-        </View>
-      </RadioButton.Group>
-      <TextInput
-        placeholder={"Age"}
-        onChangeText={(nextState) => {
-          setMobileNumber(nextState);
-        }}
-        keyboardType="number-pad"
-        maxLength={2}
-      ></TextInput>
+      <ScrollView>
+        <TextInput
+          label={"Name"}
+          onChangeText={(value) => {
+            setName(value);
+          }}
+          value={name}
+        ></TextInput>
+        <TextInput
+          label={"Email"}
+          onChangeText={(value) => {
+            setEmail(value);
+          }}
+          value={email}
+          keyboardType="email-address"
+        ></TextInput>
+        <TextInput
+          label={"Location"}
+          onChangeText={(nextState) => {
+            setLocation(nextState);
+          }}
+          value={location}
+        ></TextInput>
+        <RadioButton.Group
+          onValueChange={(newValue) => setGender(newValue)}
+          value={gender}
+        >
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Pressable
+              onPress={() => {
+                setGender(1);
+              }}
+            >
+              <Text style={{ fontSize: 25 }}>Male</Text>
+            </Pressable>
+            <RadioButton value={1} />
+            <Pressable
+              onPress={() => {
+                setGender(0);
+              }}
+            >
+              <Text style={{ fontSize: 25 }}>Female</Text>
+            </Pressable>
+            <RadioButton value={0} />
+          </View>
+        </RadioButton.Group>
+        <TextInput
+          label={"Age"}
+          onChangeText={(value) => {
+            setAge(value);
+          }}
+          value={age}
+          keyboardType="number-pad"
+          maxLength={2}
+        ></TextInput>
 
-      <TextInput
-        placeholder={"Mobile number"}
-        onChangeText={(nextState) => {
-          setMobileNumber(nextState);
-        }}
-        keyboardType="number-pad"
-        maxLength={10}
-      ></TextInput>
+        <TextInput
+          label={"Mobile number"}
+          onChangeText={(nextState) => {
+            setNumber(nextState);
+          }}
+          value={mobileNumber}
+          keyboardType="number-pad"
+          maxLength={10}
+        ></TextInput>
+        <TextInput
+          label={"Weight in Kgs"}
+          onChangeText={(value) => {
+            setWeight(value);
+          }}
+          value={weight.toString()}
+          keyboardType="number-pad"
+          maxLength={3}
+        ></TextInput>
 
-      <TextInput
-        secureTextEntry={true}
-        placeholder={"Password"}
-        onChangeText={(nextStatePass) => {
-          setPassword(nextStatePass);
-        }}
-      ></TextInput>
-      <Button
-        icon="login"
-        mode="contained"
-        onPress={() => navigation.navigate("Otp")}
-      >
-        Register
-      </Button>
-      <Button
-        mode="outlined"
-        onPress={() => {
-          navigation.navigate("Login");
-        }}
-      >
-        Already a user
-      </Button>
+        <TextInput
+          secureTextEntry={true}
+          label={"Password"}
+          onChangeText={(value) => {
+            setPassword(value);
+          }}
+          value={password}
+        ></TextInput>
+        <Button
+          icon="login"
+          mode="contained"
+          onPress={() => {
+            userRegisterations({
+              name,
+              email,
+              location,
+              gender,
+              age,
+              mobileNumber,
+              password,
+              weight,
+            }).then((resp) => {
+              if (resp === true) {
+                Alert.alert("Registeration successful please login");
+                setLogin(true);
+              }
+            });
+          }}
+        >
+          Register
+        </Button>
+        <Button
+          mode="outlined"
+          onPress={() => {
+            navigation.navigate("Login");
+          }}
+        >
+          Already a user
+        </Button>
+      </ScrollView>
     </View>
   );
 }
