@@ -16,12 +16,16 @@ import { LoginUser } from "../actions/AuthenticationActions";
 export const getUserInformation = async (mobilenumber) => {
   let value;
   try {
-    value = await axios.get(GET_USER_DETAILS_BLOOD + `${mobilenumber}`, {
-      headers: { accept: "application/json" },
-    });
+    value = await axios
+      .get(GET_USER_DETAILS_BLOOD + `${mobilenumber}`, {
+        headers: { accept: "application/json" },
+      })
+      .then((data) => {
+        return data.data;
+      });
   } catch (e) {}
 
-  return value.data;
+  return value;
 };
 
 export const saveBloodInformation = async (
@@ -111,9 +115,13 @@ export const performPairMatching = async (donor, receiver) => {
 export const findDonorAcceptedData = async (mobileNumber) => {
   let value;
   try {
-    value = await axios.get(`${GET_RECIEVE_REQUEST_BLOOD}${mobileNumber}`);
+    value = await axios
+      .get(`${GET_RECIEVE_REQUEST_BLOOD}${mobileNumber}`)
+      .then((data) => {
+        return data.data;
+      });
   } catch (e) {}
-  return value.data;
+  return value;
 };
 
 //////// authentication actions
@@ -196,7 +204,7 @@ export const authenticatUser = async (detals) => {
     data: data,
   };
 
-  let resp = await axios(config)
+  return axios(config)
     .then(function (response) {
       LoginUser(detals.username);
       AsyncStorage.setItem("mobileNumber", detals.username);
@@ -206,6 +214,4 @@ export const authenticatUser = async (detals) => {
     .catch(function (error) {
       return false;
     });
-
-  return resp;
 };

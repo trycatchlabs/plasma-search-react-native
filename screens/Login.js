@@ -1,18 +1,48 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
-import { authenticatUser } from "../Api/ApiActions";
+import { authenticatUser, getUserInformation } from "../Api/ApiActions";
+import { connect } from "react-redux";
+import AuthenticationReducer from "../reducers/Authentication";
+import { getMobileNumber } from "../Api/LocalStorageActions";
+import { LoginUser } from "../actions/AuthenticationActions";
 
 function Login(props) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const { navigation } = props;
-  console.log(navigation);
+
+  const [signedIn, setSignIn] = useState(false);
+  const [splash, setSplash] = useState(true);
+
+  useEffect(() => {
+    getMobileNumber().then((num) => {
+      getUserInformation(mobileNumber).then((value) => {
+        dispatch(setDetailsAvailable(value));
+        if (mobileNumber !== null) {
+          dispatch(LoginUser(mobileNumber));
+
+          setTimeout(() => {
+            setSplash(false);
+          }, 3000);
+        } else {
+          setSignIn(false);
+          setTimeout(() => {
+            setSplash(false);
+          }, 3000);
+        }
+      });
+      if (num !== null) {
+        navigation.navigate("bottomNav");
+      }
+    });
+  }, []);
 
   return (
     <View>
+      <Header blood={true} sigin={false} />
       <TextInput
         label={"Mobile number"}
         onChangeText={(nextState) => {
@@ -35,12 +65,16 @@ function Login(props) {
       <Button
         icon="login"
         mode="contained"
-        onPress={() => {
-          let loginState = authenticatUser({
+        onPress={async () => {
+          let resp = await authenticatUser({
             username: mobileNumber,
             password: password,
           });
-          console.log("sandeep says ", loginState);
+          if (resp === true) {
+            navigation.navigate("bottomNav");
+          } else {
+            Alert.alert("Seems like your login password is wrong");
+          }
         }}
       >
         Login
@@ -70,4 +104,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export function mapToState(state) {
+  return state;
+}
+export default connect(mapToState)(Login);

@@ -8,6 +8,7 @@ import { Dialog, Portal, Text, Button } from "react-native-paper";
 import { connect } from "react-redux";
 import { userLogout } from "../Api/ApiActions";
 import { Logout } from "../actions/AuthenticationActions";
+import { getMobileNumber } from "../Api/LocalStorageActions";
 
 function Header(props) {
   const [visible, setVisible] = React.useState(false);
@@ -17,7 +18,7 @@ function Header(props) {
 
   const hideDialog = () => setVisible(false);
 
-  const { dispatch } = props;
+  const { dispatch, navigation } = props;
 
   return (
     <>

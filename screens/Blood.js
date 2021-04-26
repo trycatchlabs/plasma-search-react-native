@@ -31,6 +31,7 @@ import {
   saveBloodInformation,
 } from "../Api/ApiActions";
 import { showMatchDetailsToDonate } from "../Api/ApiActions";
+import { getMobileNumber } from "../Api/LocalStorageActions";
 
 function Blood(props) {
   const [cardurl, setCardUrl] = useState("");
@@ -48,6 +49,7 @@ function Blood(props) {
   const [receiversData, setRecieversData] = useState([]);
   const [donorResponseData, setDonorResponseData] = useState([]);
   const [accepted, setAccepted] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState(null);
 
   let lat;
   let long;
@@ -76,7 +78,7 @@ function Blood(props) {
       setDonorResponseData(value);
       console.log(donorResponseData);
     })();
-  }, [accepted]);
+  }, []);
 
   let text = "Collecting location information please wait";
   if (errorMsg) {

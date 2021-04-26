@@ -17,6 +17,8 @@ import { getUserInformation } from "../Api/ApiActions";
 import { setDetailsAvailable } from "../actions/bloodActions";
 import { getMobileNumber } from "../Api/LocalStorageActions";
 import AuthenticationReducer from "../reducers/Authentication";
+import RedirectionService from "./supportscreens/redirection";
+import Blood from "./Blood";
 
 const Stack = createStackNavigator();
 
@@ -41,12 +43,12 @@ function Home(props) {
 
         setTimeout(() => {
           setSplash(false);
-        }, 1000);
+        }, 3000);
       } else {
         setSignIn(false);
         setTimeout(() => {
           setSplash(false);
-        }, 1000);
+        }, 3000);
       }
     });
   }, [mobileNumber, signedIn]);
@@ -55,7 +57,6 @@ function Home(props) {
     <>
       {!splash ? (
         <>
-          <Header blood={true} sigin={signedIn} />
           {!onboarding ? (
             <>
               <Onboarding
@@ -92,30 +93,30 @@ function Home(props) {
             </>
           ) : (
             <>
-              {!signedIn ? (
-                <NavigationContainer>
-                  <Stack.Navigator screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="Login" component={Login}></Stack.Screen>
-                    <Stack.Screen
-                      name="Register"
-                      component={Register}
-                    ></Stack.Screen>
-                    <Stack.Screen name="Otp" component={Otp}></Stack.Screen>
-                    <Stack.Screen
-                      name="ForgotPassword"
-                      component={ForgotPassword}
-                    ></Stack.Screen>
-                    <Stack.Screen
-                      name="bottomNav"
-                      component={BottomNav}
-                    ></Stack.Screen>
-                  </Stack.Navigator>
-                </NavigationContainer>
-              ) : (
-                <>
-                  <BottomNav />
-                </>
-              )}
+              <NavigationContainer>
+                <Stack.Navigator screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="Login" component={Login}></Stack.Screen>
+                  <Stack.Screen
+                    name="Register"
+                    component={Register}
+                  ></Stack.Screen>
+                  <Stack.Screen name="Otp" component={Otp}></Stack.Screen>
+                  <Stack.Screen
+                    name="ForgotPassword"
+                    component={ForgotPassword}
+                  ></Stack.Screen>
+                  <Stack.Screen
+                    name="bottomNav"
+                    component={BottomNav}
+                  ></Stack.Screen>
+                  <Stack.Screen
+                    name="Redirection"
+                    component={RedirectionService}
+                  ></Stack.Screen>
+                  <Stack.Screen name="Home" component={Home}></Stack.Screen>
+                  <Stack.Screen name="Blood" component={Blood}></Stack.Screen>
+                </Stack.Navigator>
+              </NavigationContainer>
             </>
           )}
         </>
