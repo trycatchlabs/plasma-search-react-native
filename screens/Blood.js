@@ -210,30 +210,31 @@ function Blood(props) {
             ) : (
               <>
                 <View>
-                  <TextInput
-                    label={"Enter Details of your requirement (Max char 160)"}
-                    maxLength={160}
-                    value={message}
-                    onChangeText={(value) => {
-                      setMessage(value);
-                    }}
-                  ></TextInput>
-                  <Button
-                    mode="contained"
-                    onPress={() => {
-                      requestDonor(
-                        AuthenticationReducer.mobilenumber,
-                        message,
-                        lat,
-                        long
-                      );
-                    }}
-                  >
-                    Send personal message
-                  </Button>
                   {donorResponseData.length === 0 ? (
                     <>
-                      <Text>You can make a request</Text>
+                      <TextInput
+                        label={
+                          "Enter Details of your requirement (Max char 160)"
+                        }
+                        maxLength={160}
+                        value={message}
+                        onChangeText={(value) => {
+                          setMessage(value);
+                        }}
+                      ></TextInput>
+                      <Button
+                        mode="contained"
+                        onPress={() => {
+                          requestDonor(
+                            AuthenticationReducer.mobilenumber,
+                            message,
+                            lat,
+                            long
+                          );
+                        }}
+                      >
+                        Send personal message
+                      </Button>
                     </>
                   ) : (
                     <>
