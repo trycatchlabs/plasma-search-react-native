@@ -16,6 +16,7 @@ import { LoginUser } from "../actions/AuthenticationActions";
 import { getUserInformation } from "../Api/ApiActions";
 import { setDetailsAvailable } from "../actions/bloodActions";
 import { getMobileNumber } from "../Api/LocalStorageActions";
+import AuthenticationReducer from "../reducers/Authentication";
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ function Home(props) {
   const [signedIn, setSignIn] = useState(false);
   const [splash, setSplash] = useState(true);
   const [mobileNumber, setMobileNumber] = useState(null);
-  const { dispatch } = props;
+  const { AuthenticationReducer, dispatch } = props;
 
   React.useEffect(() => {
     getMobileNumber().then((num) => {
@@ -104,10 +105,16 @@ function Home(props) {
                       name="ForgotPassword"
                       component={ForgotPassword}
                     ></Stack.Screen>
+                    <Stack.Screen
+                      name="bottomNav"
+                      component={BottomNav}
+                    ></Stack.Screen>
                   </Stack.Navigator>
                 </NavigationContainer>
               ) : (
-                <BottomNav />
+                <>
+                  <BottomNav />
+                </>
               )}
             </>
           )}

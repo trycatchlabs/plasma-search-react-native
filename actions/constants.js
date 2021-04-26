@@ -2,6 +2,7 @@ export const LOGIN = "LOGIN";
 export const SIGNUP = "SIGNUP";
 export const ERROR = "ERROR";
 export const IN_PROGRESS = "IN_PROGRESS";
+export const LOGOUT = "LOGOUT";
 
 ///// blood actions
 export const SET_BLOOD_RECIEVER_BLOOD = "SET_BLOOD_RECIEVER_BLOOD";

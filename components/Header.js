@@ -7,16 +7,17 @@ import { ScrollView } from "react-native";
 import { Dialog, Portal, Text, Button } from "react-native-paper";
 import { connect } from "react-redux";
 import { userLogout } from "../Api/ApiActions";
+import { Logout } from "../actions/AuthenticationActions";
 
 function Header(props) {
   const [visible, setVisible] = React.useState(false);
   const [loginstate, changeLoginState] = useState(false);
   const { AuthenticationReducer } = props;
+  const [refreshPage, setRefreshPage] = useState("");
 
-  useEffect(() => {
-    console.log("loggedout");
-  }, [changeLoginState]);
   const hideDialog = () => setVisible(false);
+
+  const { dispatch } = props;
 
   return (
     <>
@@ -46,7 +47,7 @@ function Header(props) {
                         text: "Yes",
                         onPress: () => {
                           userLogout(AuthenticationReducer.mobilenumber);
-                          changeLoginState(true);
+                          dispatch(Logout());
                         },
                       },
                       { text: "No", onPress: () => console.log("No Pressed") },
