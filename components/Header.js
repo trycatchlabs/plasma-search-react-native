@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StatusBar, StyleSheet, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { Linking } from "react-native";
@@ -6,11 +6,16 @@ import { Linking } from "react-native";
 import { ScrollView } from "react-native";
 import { Dialog, Portal, Text, Button } from "react-native-paper";
 import { connect } from "react-redux";
-import { setBloodRecieverOrDoner } from "../actions/bloodActions";
+import { userLogout } from "../Api/ApiActions";
 
 function Header(props) {
   const [visible, setVisible] = React.useState(false);
+  const [loginstate, changeLoginState] = useState(false);
+  const { AuthenticationReducer } = props;
 
+  useEffect(() => {
+    console.log("loggedout");
+  }, [changeLoginState]);
   const hideDialog = () => setVisible(false);
 
   return (
@@ -27,7 +32,7 @@ function Header(props) {
               onPress={() => setVisible(true)}
             />
 
-          <Appbar.Action
+            <Appbar.Action
               icon="alert-octagram"
               onPress={() => setVisible(true)}
             />
@@ -39,7 +44,10 @@ function Header(props) {
                     Alert.alert("Logout", "do you want to logout", [
                       {
                         text: "Yes",
-                        onPress: () => console.log("Yes Pressed"),
+                        onPress: () => {
+                          userLogout(AuthenticationReducer.mobilenumber);
+                          changeLoginState(true);
+                        },
                       },
                       { text: "No", onPress: () => console.log("No Pressed") },
                     ])

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BottomNavigation, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import BottomNav from "../components/BottomNav";
 import Header from "../components/Header";
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,12 +13,8 @@ import Onboarding from "react-native-onboarding-swiper";
 import SplashScreen from "./SplashScreen";
 import { connect } from "react-redux";
 import { LoginUser } from "../actions/AuthenticationActions";
-import axios from "axios";
 import { getUserInformation } from "../Api/ApiActions";
-import {
-  setDetailsAvailable,
-  setMobileNumberBlood,
-} from "../actions/bloodActions";
+import { setDetailsAvailable } from "../actions/bloodActions";
 import { getMobileNumber } from "../Api/LocalStorageActions";
 
 const Stack = createStackNavigator();

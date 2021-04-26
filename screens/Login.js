@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
+import { authenticatUser } from "../Api/ApiActions";
 
 function Login(props) {
   const [mobileNumber, setMobileNumber] = useState("");
@@ -17,6 +18,7 @@ function Login(props) {
         onChangeText={(nextState) => {
           setMobileNumber(nextState);
         }}
+        value={mobileNumber}
         keyboardType="number-pad"
         maxLength={10}
       ></TextInput>
@@ -27,12 +29,19 @@ function Login(props) {
         onChangeText={(nextStatePass) => {
           setPassword(nextStatePass);
         }}
+        value={password}
       ></TextInput>
 
       <Button
         icon="login"
         mode="contained"
-        onPress={() => console.log("login")}
+        onPress={() => {
+          let loginState = authenticatUser({
+            username: mobileNumber,
+            password: password,
+          });
+          console.log("sandeep says ", loginState);
+        }}
       >
         Login
       </Button>
