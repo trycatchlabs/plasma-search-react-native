@@ -34,6 +34,9 @@ export const saveBloodInformation = async (
   let response;
   let data;
   try {
+    if (latitude === null || longitude === null) {
+      return false;
+    }
     data = await value;
     console.log(number);
     data.mobileNumber = await number;
