@@ -17,6 +17,7 @@ import { getUserInformation } from "../Api/ApiActions";
 import { setDetailsAvailable } from "../actions/bloodActions";
 import { getMobileNumber } from "../Api/LocalStorageActions";
 import AuthenticationReducer from "../reducers/Authentication";
+import Redirection from "./supportscreens/Redirection";
 
 const Stack = createStackNavigator();
 
@@ -108,6 +109,10 @@ function Home(props) {
                     <Stack.Screen
                       name="bottomNav"
                       component={BottomNav}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                      name="Redirection"
+                      component={Redirection}
                     ></Stack.Screen>
                   </Stack.Navigator>
                 </NavigationContainer>

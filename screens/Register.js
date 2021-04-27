@@ -126,8 +126,9 @@ function Register(props) {
               weight,
             }).then((resp) => {
               if (resp === true) {
-                Alert.alert("Registeration successful please login");
+                Alert.alert("Registeration successful logging you in");
                 setLogin(true);
+                navigation.navigate("Redirection");
               }
             });
           }}

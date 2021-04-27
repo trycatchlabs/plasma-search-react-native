@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
@@ -35,11 +35,16 @@ function Login(props) {
       <Button
         icon="login"
         mode="contained"
-        onPress={() => {
-          let loginState = authenticatUser({
+        onPress={async () => {
+          let loginState = await authenticatUser({
             username: mobileNumber,
             password: password,
           });
+          if (loginState === true) {
+            navigation.navigate("Redirection");
+          } else {
+            Alert.alert("Invalid", "Username/password seems to be invalid");
+          }
           console.log("sandeep says ", loginState);
         }}
       >
