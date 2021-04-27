@@ -49,8 +49,8 @@ function Blood(props) {
   const [donorResponseData, setDonorResponseData] = useState([]);
   const [accepted, setAccepted] = useState(false);
 
-  let lat;
-  let long;
+  let lat = null;
+  let long = null;
 
   useEffect(() => {
     (async () => {
