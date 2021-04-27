@@ -5,18 +5,21 @@ import Blood from "../screens/Blood";
 import Misc from "../screens/Misc";
 import Oxygen from "../screens/Oxygen";
 import Profile from "../screens/Profile";
+import TwitterInfo from "../screens/TwitterInfo";
 
 function BottomNav() {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "Blood", title: "Blood", icon: "water" },
-    { key: "Oxygen", title: "Oxygen", icon: "circle" },
+    { key: "Information", title: "Information", icon: "information" },
+    // { key: "Oxygen", title: "Oxygen", icon: "circle" },
     // { key: "Misc", title: "Misc", icon: "clipboard" },// still in progress
     { key: "Profile", title: "Profile", icon: "contacts" },
   ]);
   const renderScene = BottomNavigation.SceneMap({
     Blood: Blood,
     Oxygen: Oxygen,
+    Information: TwitterInfo,
     Misc: Misc,
     Profile: Profile,
   });
