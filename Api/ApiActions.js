@@ -10,6 +10,7 @@ import {
   GET_RECIEVE_REQUEST_BLOOD,
   REGISTER_USER,
   LOGIN_USER,
+  PROFILE_INFORMATION,
 } from "./Endpoints";
 import { LoginUser } from "../actions/AuthenticationActions";
 
@@ -211,4 +212,13 @@ export const authenticatUser = async (detals) => {
     });
 
   return resp;
+};
+
+export const userProfileInformation = async (mobilenumber) => {
+  let response;
+  try {
+    response = await axios.get(`${PROFILE_INFORMATION}${mobilenumber}`);
+  } catch (e) {}
+
+  return response.data;
 };

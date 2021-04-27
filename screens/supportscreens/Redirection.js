@@ -1,5 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { ActivityIndicator, Colors } from "react-native-paper";
 import * as React from "react";
+import { View } from "react-native";
 import { Text, Title } from "react-native-paper";
 import { connect } from "react-redux";
 import { LoginUser } from "../../actions/AuthenticationActions";
@@ -39,7 +41,15 @@ function Redirection(props) {
 
   return (
     <>
-      <Title>Performing Necessary validations</Title>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Title>
+          <ActivityIndicator
+            size={"large"}
+            animating={true}
+            color={Colors.red800}
+          />
+        </Title>
+      </View>
     </>
   );
 }

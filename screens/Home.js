@@ -57,7 +57,7 @@ function Home(props) {
     <>
       {!splash ? (
         <>
-          <Header blood={true} sigin={signedIn} />
+          <Header blood={true} sigin={false} />
           {!onboarding ? (
             <>
               <Onboarding
