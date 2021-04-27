@@ -18,6 +18,7 @@ import { setDetailsAvailable } from "../actions/bloodActions";
 import { getMobileNumber } from "../Api/LocalStorageActions";
 import AuthenticationReducer from "../reducers/Authentication";
 import Redirection from "./supportscreens/Redirection";
+import Blood from "./Blood";
 
 const Stack = createStackNavigator();
 
@@ -114,6 +115,7 @@ function Home(props) {
                       name="Redirection"
                       component={Redirection}
                     ></Stack.Screen>
+                    <Stack.Screen name="Blood" component={Blood}></Stack.Screen>
                   </Stack.Navigator>
                 </NavigationContainer>
               ) : (
