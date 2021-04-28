@@ -4,13 +4,20 @@ import { ActivityIndicator, Colors, Title } from "react-native-paper";
 import { Text } from "react-native-paper";
 
 function SplashScreen() {
-  const image = { uri: "https://reactjs.org/logo-og.png" };
+  const image = {};
 
   return (
     <>
-      <ImageBackground source={image} style={styles.image}>
+      <ImageBackground
+        source={require("../assets/splashScreen.png")}
+        style={styles.image}
+      >
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
           <Title>
             <ActivityIndicator

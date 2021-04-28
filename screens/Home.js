@@ -19,6 +19,7 @@ import { getMobileNumber } from "../Api/LocalStorageActions";
 import AuthenticationReducer from "../reducers/Authentication";
 import Redirection from "./supportscreens/Redirection";
 import Blood from "./Blood";
+import { Alert } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -35,22 +36,26 @@ function Home(props) {
       dispatch(LoginUser(num));
     });
 
-    getUserInformation(mobileNumber).then((value) => {
-      dispatch(setDetailsAvailable(value));
-      if (mobileNumber !== null) {
-        setSignIn(true);
-        dispatch(LoginUser(mobileNumber));
+    getUserInformation(mobileNumber)
+      .then((value) => {
+        dispatch(setDetailsAvailable(value));
+        if (mobileNumber !== null) {
+          setSignIn(true);
+          dispatch(LoginUser(mobileNumber));
 
-        setTimeout(() => {
-          setSplash(false);
-        }, 1000);
-      } else {
-        setSignIn(false);
-        setTimeout(() => {
-          setSplash(false);
-        }, 1000);
-      }
-    });
+          setTimeout(() => {
+            setSplash(false);
+          }, 1000);
+        } else {
+          setSignIn(false);
+          setTimeout(() => {
+            setSplash(false);
+          }, 1000);
+        }
+      })
+      .catch((e) => {
+        Alert.alert("Alert", "Sorry we are down for maintenance");
+      });
   }, [mobileNumber, signedIn]);
 
   return (
