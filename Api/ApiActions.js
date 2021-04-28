@@ -11,6 +11,7 @@ import {
   REGISTER_USER,
   LOGIN_USER,
   PROFILE_INFORMATION,
+  FORGOT_PASSWORD,
 } from "./Endpoints";
 import { LoginUser } from "../actions/AuthenticationActions";
 
@@ -126,6 +127,23 @@ export function validateEmail(email) {
   return re.test(email);
 }
 
+export const userValidations = async (registerationsData) => {
+  let resp;
+  let value = false;
+  registerationsData.age = parseInt(registerationsData.age);
+  registerationsData.gender = registerationsData.gender === 0 ? false : true;
+
+  if (!validateEmail(registerationsData.email)) {
+    Alert.alert("Please enter valid email address");
+  } else if (registerationsData.mobileNumber.length !== 10) {
+    Alert.alert("Incorrect Mobile number");
+  } else if (registerationsData.weight < 50) {
+    Alert.alert("Sorry you cant donate as you dont reach minimum criteria");
+  } else {
+    return true;
+  }
+};
+
 export const userRegisterations = async (registerationsData) => {
   let resp;
   let value = false;
@@ -170,19 +188,6 @@ export const userLogout = async (mobileNumber) => {
   } catch (e) {}
 };
 
-// export const authenticatUser = async (details) => {
-//   console.log(details);
-//   let resp;
-//   try {
-//     resp = await axios.post(LOGIN_USER, details, {
-//       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//     });
-//   } catch (e) {
-//     console.log(e);
-//   }
-//   console.log(resp);
-// };
-
 export const authenticatUser = async (detals) => {
   var axios = require("axios");
   var qs = require("qs");
@@ -212,6 +217,18 @@ export const authenticatUser = async (detals) => {
     });
 
   return resp;
+};
+
+export const forgotAuthSuccess = async (details) => {
+  console.log(details);
+
+  try {
+    let resp = await axios.post(FORGOT_PASSWORD, details).then((data) => {
+      return data.data;
+    });
+    Alert.alert("Info", resp.message);
+    return true;
+  } catch (e) {}
 };
 
 export const userProfileInformation = async (mobilenumber) => {
