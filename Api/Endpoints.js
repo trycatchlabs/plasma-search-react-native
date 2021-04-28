@@ -13,3 +13,4 @@ export const GET_RECIEVE_REQUEST_BLOOD = `${BASE_URL}/blood/receive/`;
 export const REGISTER_USER = `${BASE_URL}/user/register`;
 export const LOGIN_USER = `${BASE_URL}/user/login`;
 export const PROFILE_INFORMATION = `${BASE_URL}/profile/`;
+export const FORGOT_PASSWORD = `${BASE_URL}/user/forgotPassword`;
