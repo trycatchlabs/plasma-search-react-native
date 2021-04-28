@@ -12,7 +12,7 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "teal",
+    primary: "orange",
     accent: "#00c78e",
   },
 };
