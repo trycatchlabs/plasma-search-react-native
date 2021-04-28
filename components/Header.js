@@ -28,7 +28,7 @@ function Header(props) {
           <>
             <Appbar.Content title="Covaid " />
 
-            <Appbar.Action
+            {/* <Appbar.Action
               icon="information"
               onPress={() => setVisible(true)}
             />
@@ -36,7 +36,7 @@ function Header(props) {
             <Appbar.Action
               icon="alert-octagram"
               onPress={() => setVisible(true)}
-            />
+            /> */}
             {props.sigin && (
               <>
                 <Appbar.Action
