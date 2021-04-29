@@ -9,7 +9,6 @@ function Login(props) {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
   const { navigation } = props;
-  console.log(navigation);
 
   return (
     <View>
@@ -45,7 +44,6 @@ function Login(props) {
           } else {
             Alert.alert("Invalid", "Username/password seems to be invalid");
           }
-          console.log("sandeep says ", loginState);
         }}
       >
         Login

@@ -1,22 +1,30 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { Alert, ScrollView } from "react-native";
 import { Button, Card, Divider, Paragraph, Title } from "react-native-paper";
 import { connect } from "react-redux";
 import { Logout } from "../actions/AuthenticationActions";
 import { userLogout, userProfileInformation } from "../Api/ApiActions";
+import Login from "./Login";
+const Stack = createStackNavigator();
 
 function Profile(props) {
-  const { AuthenticationReducer, dispatch } = props;
+  const { AuthenticationReducer, dispatch, navigation } = props;
+  console.log(props.route);
 
   const [resp, setResponse] = React.useState(null);
 
   const [data, dataSet] = React.useState(false);
-  React.useEffect(async () => {
-    let response = await userProfileInformation(
-      AuthenticationReducer.mobilenumber
+
+  React.useEffect(() => {
+    userProfileInformation(AuthenticationReducer.mobilenumber).then(
+      (response) => {
+        setResponse(response);
+
+        dataSet(true);
+      }
     );
-    setResponse(response);
-    dataSet(true);
   }, []);
 
   return (
@@ -38,7 +46,10 @@ function Profile(props) {
               onPress={() => {
                 userLogout(AuthenticationReducer.mobilenumber);
                 dispatch(Logout());
-                Alert.alert("Logout Inetiated relaunch app to login again");
+                Alert.alert(
+                  "Logout Successful",
+                  "Logout Inetiated relaunch app to login again"
+                );
               }}
               style={{ width: "100%" }}
             >
