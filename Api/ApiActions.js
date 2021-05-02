@@ -33,6 +33,7 @@ export const saveBloodInformation = async (
   latitude,
   longitude
 ) => {
+  console.log(value, number, date, latitude, longitude);
   let response;
   let data;
   try {
@@ -67,14 +68,17 @@ export const saveBloodInformation = async (
 
     delete data.documentUri;
     delete data.bloodReciever;
-    console.log(data);
 
-    let resp = await axios.post(SAVE_USER_DETAILS_BLOOD, data);
+    response = await axios.post(SAVE_USER_DETAILS_BLOOD, data);
   } catch (e) {
     console.log(e);
   }
 
-  return response;
+  if (response === undefined) {
+    return false;
+  }
+
+  return true;
 };
 
 export const requestDonor = async (mobileNumber, message, lat, long) => {
@@ -137,8 +141,8 @@ export const userValidations = async (registerationsData) => {
     Alert.alert("Please enter valid email address");
   } else if (registerationsData.mobileNumber.length !== 10) {
     Alert.alert("Incorrect Mobile number");
-  } else if (registerationsData.weight < 50) {
-    Alert.alert("Sorry you cant donate as you dont reach minimum criteria");
+  } else if (registerationsData.password.length < 8) {
+    Alert.alert("please enter minimum 8 characters as password");
   } else {
     return true;
   }
@@ -154,8 +158,6 @@ export const userRegisterations = async (registerationsData) => {
     Alert.alert("Please enter valid email address");
   } else if (registerationsData.mobileNumber.length !== 10) {
     Alert.alert("Incorrect Mobile number");
-  } else if (registerationsData.weight < 50) {
-    Alert.alert("Sorry you cant donate as you dont reach minimum criteria");
   } else {
     try {
       resp = await axios.post(REGISTER_USER, registerationsData).then((res) => {

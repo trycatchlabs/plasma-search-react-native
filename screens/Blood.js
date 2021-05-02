@@ -10,18 +10,16 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Card, Title, Paragraph, Portal } from "react-native-paper";
+import { Card, Title, Paragraph, Portal, Divider } from "react-native-paper";
 import { Button, Text, TextInput, Chip, Switch } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { connect } from "react-redux";
-import ImageButton from "../components/ImageButton";
 import {
   setBloodRecieverOrDoner,
   setBloodType,
   setDetailsAvailableBlood,
   setDistanceWillingTotravel,
   setHospitalName,
-  setLatitudeAndLongitude,
   setPickUpDropStatus,
 } from "../actions/bloodActions";
 import {
@@ -31,21 +29,23 @@ import {
   saveBloodInformation,
 } from "../Api/ApiActions";
 import { showMatchDetailsToDonate } from "../Api/ApiActions";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+const Stack = createStackNavigator();
 
-function Blood(props) {
-  const [cardurl, setCardUrl] = useState("");
+export function BloodPage(props) {
   const [visible, setVisible] = React.useState(false);
   const [show, setShow] = React.useState(false);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date(Date.now() - 86400000 * 14));
   const [mode, setMode] = React.useState("date");
   const [message, setMessage] = useState("");
-  const [personalMessage, setPersonalMessageActive] = useState(true);
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const { bloodReducer, AuthenticationReducer, dispatch } = props;
+  const { bloodReducer, AuthenticationReducer, dispatch, navigation } = props;
+
   const [receiversData, setRecieversData] = useState([]);
   const [donorResponseData, setDonorResponseData] = useState([]);
   const [accepted, setAccepted] = useState(false);
@@ -155,22 +155,33 @@ function Blood(props) {
                         </TouchableHighlight> */}
                           <Card.Actions>
                             {cardData.isAccepted === 0 ? (
-                              <Button
-                                onPress={() => {
-                                  performPairMatching(
-                                    AuthenticationReducer.mobilenumber,
-                                    cardData.mobileNumber
-                                  );
+                              <>
+                                {!accepted && (
+                                  <Button
+                                    onPress={() => {
+                                      performPairMatching(
+                                        AuthenticationReducer.mobilenumber,
+                                        cardData.mobileNumber
+                                      );
 
-                                  Alert.alert(
-                                    "We have informed the respective reciever",
-                                    "give us some time to cordinate with them"
-                                  );
-                                  setAccepted(true);
-                                }}
-                              >
-                                Accept
-                              </Button>
+                                      Alert.alert(
+                                        "We have informed the respective reciever",
+                                        "give us some time to cordinate with them you could reach out to them"
+                                      );
+                                      setAccepted(true);
+                                    }}
+                                  >
+                                    Accept
+                                  </Button>
+                                )}
+                                {accepted && (
+                                  <>
+                                    <Title>
+                                      Call Patient at {cardData.mobileNumber}
+                                    </Title>
+                                  </>
+                                )}
+                              </>
                             ) : (
                               <>
                                 <Title>
@@ -272,11 +283,18 @@ function Blood(props) {
           ) : (
             <>
               <Card>
+                {bloodReducer.bloodReciever ? (
+                  <Title style={{ textAlign: "center" }}>Reciever</Title>
+                ) : (
+                  <>
+                    <Title style={{ textAlign: "center" }}>Donor </Title>
+                  </>
+                )}
                 <View style={styles.container}>
-                  <Text style={{ fontSize: 20 }}>
-                    Blood ({!bloodReducer.bloodReciever && <Text>Donate</Text>}
-                    {bloodReducer.bloodReciever && <Text>Receive</Text>})
+                  <Text style={{ fontSize: 15 }}>
+                    Toggle between Recieve and Donate
                   </Text>
+
                   <Switch
                     value={bloodReducer.bloodReciever}
                     onValueChange={() => {
@@ -285,6 +303,20 @@ function Blood(props) {
                       );
                     }}
                   />
+                </View>
+                <View>
+                  {bloodReducer.bloodReciever ? (
+                    <Text style={{ textAlign: "center" }}>
+                      You are in reciever mode fill in the details to search for
+                      donors
+                    </Text>
+                  ) : (
+                    <Text style={{ textAlign: "center" }}>
+                      You are in donor mode fill details and people will reach
+                      out to you
+                    </Text>
+                  )}
+                  <Divider style={{ borderWidth: 1, borderColor: "teal" }} />
                 </View>
                 {!bloodReducer.bloodReciever && (
                   <Card>
@@ -486,7 +518,6 @@ function Blood(props) {
                       <Button mode="contained" onPress={showDatepicker}>
                         Recovered on{" "}
                         {JSON.stringify(date).split("T")[0].slice(1)}{" "}
-                        (YYYY-MM-DD)
                       </Button>
                       {show && (
                         <DateTimePicker
@@ -495,7 +526,7 @@ function Blood(props) {
                           mode={mode}
                           is24Hour={true}
                           display="default"
-                          maximumDate={new Date(Date.now() - 86400000)}
+                          maximumDate={new Date(Date.now() - 86400000 * 14)}
                           onChange={onChange}
                         />
                       )}
@@ -509,9 +540,6 @@ function Blood(props) {
                         }}
                         value={bloodReducer.distanceWillingToTravel}
                       ></TextInput>
-                      <View>
-                        <Text style={styles.paragraph}>{text}</Text>
-                      </View>
                     </View>
                   </Card>
                 )}
@@ -736,9 +764,6 @@ function Blood(props) {
                       </Text>
                     </View>
                     {/* <ImageButton></ImageButton> */}
-                    <View>
-                      <Text style={styles.paragraph}>{text}</Text>
-                    </View>
                   </Card>
                 )}
                 <Card.Actions>
@@ -754,12 +779,15 @@ function Blood(props) {
                         long
                       );
 
+                      console.log("sandeep says", response);
+
                       if (response === true) {
                         dispatch(setDetailsAvailableBlood(true));
                       } else {
+                        dispatch(setDetailsAvailableBlood(false));
                         Alert.alert(
-                          "Disclaimer",
-                          "We need location to find the nearest donors/patients please share them with us"
+                          "Information",
+                          "Please fill the entire form correctly"
                         );
                         try {
                           let {
@@ -810,18 +838,29 @@ function Blood(props) {
   );
 }
 
+function Blood(props) {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="BloodPage" component={BloodPage}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
 export function mapToState(state) {
   return state;
 }
 
-export default connect(mapToState)(Blood);
+export default connect(mapToState)(BloodPage);
 
 const styles = StyleSheet.create({
-  chip: { height: 50, marginLeft: 10, marginRight: 10 },
+  chip: { height: 50, marginLeft: 10, width: 60, marginRight: 10 },
   container: { flexDirection: "row", justifyContent: "center" },
   choiceButton: { width: "50%", padding: 5, margin: 1 },
   chipSelected: {
     height: 50,
+    width: 60,
     backgroundColor: "red",
     marginLeft: 10,
     marginRight: 10,

@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, Card, TextInput, Title, Text } from "react-native-paper";
 import Header from "../components/Header";
 import { useState } from "react";
 import { authenticatUser } from "../Api/ApiActions";
@@ -57,6 +57,15 @@ function Login(props) {
       <Button mode="outlined" onPress={() => navigation.navigate("Register")}>
         Register
       </Button>
+      <Card style={{ padding: 10 }}>
+        <Text style={{ color: "red", fontSize: 12 }}>
+          1. By login/register you are agreeing to our privacy policy and
+          license
+        </Text>
+        <Text style={{ color: "red", fontSize: 12 }}>
+          2. We may redirect you to external website
+        </Text>
+      </Card>
     </View>
   );
 }

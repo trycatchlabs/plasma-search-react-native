@@ -1,5 +1,6 @@
 ////// base end point
-export const BASE_URL = "http://covaid-stg.herokuapp.com";
+// export const BASE_URL = "http://covaid-stg.herokuapp.com";
+export const BASE_URL = "https://covaid.centralindia.cloudapp.azure.com";
 
 ///// blood end points
 export const GET_USER_DETAILS_BLOOD = `${BASE_URL}/blood/`;
