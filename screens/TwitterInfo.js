@@ -98,23 +98,12 @@ function TwitterInfo(params) {
             mode="contained"
             style={styles.buttons}
             onPress={() => {
-              Linking.openURL("https://covidmealsforindia.com/");
-            }}
-          >
-            Food
-          </Button>
-          <Button
-            mode="contained"
-            style={styles.buttons}
-            onPress={() => {
               showModal();
-              setButonType("Vaccination");
+              setButonType("Plasma");
             }}
           >
-            Vaccination
+            Plasma
           </Button>
-        </Card.Actions>
-        <Card.Actions>
           <Button
             mode="contained"
             style={styles.buttons}
@@ -125,15 +114,17 @@ function TwitterInfo(params) {
           >
             Oxygen
           </Button>
+        </Card.Actions>
+        <Card.Actions>
           <Button
             mode="contained"
-            style={styles.buttons}
+            style={styles.buttonsEnd}
             onPress={() => {
               showModal();
-              setButonType("Plasma");
+              setButonType("Icu");
             }}
           >
-            Plasma
+            Icu
           </Button>
         </Card.Actions>
         <Card.Actions>
@@ -142,10 +133,10 @@ function TwitterInfo(params) {
             style={styles.buttons}
             onPress={() => {
               showModal();
-              setButonType("Remdesevir");
+              setButonType("Beds");
             }}
           >
-            Remdesevir
+            Bed's
           </Button>
           <Button
             mode="contained"
@@ -161,23 +152,35 @@ function TwitterInfo(params) {
         <Card.Actions>
           <Button
             mode="contained"
+            style={styles.buttonsEnd}
+            onPress={() => {
+              Linking.openURL("https://covidmealsforindia.com/");
+            }}
+          >
+            Food
+          </Button>
+        </Card.Actions>
+
+        <Card.Actions>
+          <Button
+            mode="contained"
             style={styles.buttons}
             onPress={() => {
               showModal();
-              setButonType("Fabiflu");
+              setButonType("Vaccination");
             }}
           >
-            fabiflu
+            Vaccination
           </Button>
           <Button
             mode="contained"
             style={styles.buttons}
             onPress={() => {
               showModal();
-              setButonType("Icu");
+              setButonType("Remdesevir");
             }}
           >
-            Icu
+            Remdesevir
           </Button>
         </Card.Actions>
         <Card.Actions>
@@ -186,12 +189,13 @@ function TwitterInfo(params) {
             style={styles.buttonsEnd}
             onPress={() => {
               showModal();
-              setButonType("Beds");
+              setButonType("Fabiflu");
             }}
           >
-            Bed's
+            fabiflu
           </Button>
         </Card.Actions>
+
         <Card.Actions>
           <Button
             mode="contained"
@@ -204,9 +208,6 @@ function TwitterInfo(params) {
           </Button>
         </Card.Actions>
 
-        <Title style={styles.buttonsEnd}>
-          We shall redirect you to twitter or other sources for the following
-        </Title>
         {/* <Card.Actions style={{ justifyContent: "center" }}>
           <Button mode="contained" style={styles.buttonsEnd}>
             Food

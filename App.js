@@ -2,8 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { StyleSheet, Text, View } from "react-native";
-import Login from "./screens/Login";
-import Register from "./screens/Register";
 import Home from "./screens/Home";
 import { Provider } from "react-redux";
 import newstore from "./store";
@@ -12,8 +10,8 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "orange",
-    accent: "#00c78e",
+    primary: "teal",
+    accent: "grey",
   },
 };
 

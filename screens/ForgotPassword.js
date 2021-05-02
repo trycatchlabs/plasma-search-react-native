@@ -55,17 +55,16 @@ function ForgotPassword(props) {
         <>
           <TextInput
             secureTextEntry={true}
+            label={"Enter Otp"}
+            maxLength={6}
+            onChangeText={setVerificationCode}
+          ></TextInput>
+          <TextInput
+            secureTextEntry={true}
             label={"New Password"}
             onChangeText={(nextStatePass) => {
               setPassword(nextStatePass);
             }}
-          ></TextInput>
-
-          <TextInput
-            secureTextEntry={true}
-            label={"Enter Otp"}
-            maxLength={6}
-            onChangeText={setVerificationCode}
           ></TextInput>
         </>
       ) : (

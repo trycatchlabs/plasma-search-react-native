@@ -10,7 +10,7 @@ import TwitterInfo from "../screens/TwitterInfo";
 function BottomNav() {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "Blood", title: "Blood", icon: "water" },
+    { key: "Blood", title: "Plasma", icon: "water" },
     { key: "Information", title: "Information", icon: "information" },
     // { key: "Oxygen", title: "Oxygen", icon: "circle" },
     // { key: "Misc", title: "Misc", icon: "clipboard" },// still in progress
